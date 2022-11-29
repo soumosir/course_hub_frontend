@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useParams } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -28,14 +29,15 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
-export default function Home() {
-  
+export default function CourseDetail() {
+    const params = useParams();
+    console.log(params.id)
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
         <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>
-                    Home
+                    {params.id}
         </Typography>
         {/* <Box
           sx={{
