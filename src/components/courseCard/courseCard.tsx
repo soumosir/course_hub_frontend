@@ -79,9 +79,13 @@ export default function courseCard({data}: any) {
         // Somewhere in your code, e.g. inside a handler:
         navigate("/course/"+event.currentTarget.getAttribute("id")); 
     };
+    const handleWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, isWishlist:boolean){
+        // Somewhere in your code, e.g. inside a handler:
+        console.log(event.currentTarget.getAttribute("id"), isWishlist)
+    };
 
     return (
-        data.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active}: card) => (
+        data.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active, isWishlist}: card) => (
             <ThemeProvider theme={theme}>
                 <Container component="main">
                 <CssBaseline />
@@ -110,8 +114,12 @@ export default function courseCard({data}: any) {
                             </Typography>
                             </CardContent>
                         <CardActions>
-                            <Button id={courseCode} onClick={handleCourseClick} size="small"
-                                >Go to the course</Button>
+                            <Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>
+                            {isWishlist ? 
+                                <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
+                            :
+                                <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
+                            }
                         </CardActions>
                     </Card>
                 </Container>

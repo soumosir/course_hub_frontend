@@ -7,5 +7,6 @@ export interface card {
     totalSeats: number,
     remainingSeats: number,
     courseDescription: string,
-    active: 1
+    active: 1,
+    isWishlist: boolean
 }

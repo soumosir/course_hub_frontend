@@ -38,7 +38,8 @@ const response = [
         totalSeats: 60,
         remainingSeats: 60,
         courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1
+        active: 1,
+        isWishlist: false
     }, 
     {
         courseCode: "ENPM614",
@@ -49,7 +50,8 @@ const response = [
         totalSeats: 60,
         remainingSeats: 60,
         courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1
+        active: 1,
+        isWishlist: false
     },
     {
         courseCode: "ENPM615",
@@ -60,7 +62,8 @@ const response = [
         totalSeats: 60,
         remainingSeats: 60,
         courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1
+        active: 1,
+        isWishlist: false
     },
     {
         courseCode: "ENPM616",
@@ -71,7 +74,8 @@ const response = [
         totalSeats: 60,
         remainingSeats: 60,
         courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1
+        active: 1,
+        isWishlist: false
     },
     {
         courseCode: "ENPM617",
@@ -82,7 +86,8 @@ const response = [
         totalSeats: 60,
         remainingSeats: 60,
         courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1
+        active: 1,
+        isWishlist: false
     },
 ]
 
@@ -93,7 +98,7 @@ export default function Courses() {
       <Container component="main">
       <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>
-                    Courses
+            Courses
         </Typography>
         <CourseCard data={response} />
       </Container>
