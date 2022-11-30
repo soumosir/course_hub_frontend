@@ -6,6 +6,9 @@ import { Routes, Route } from 'react-router-dom'
 import UserSignUp from './components/userSignUp/userSignUp'
 import UserSignIn from './components/userSignIn/userSignIn'
 import Home from './components/home/home'
+import Courses from './components/courses/courses'
+import Wishlist from './components/wishlist/wishlist'
+import CourseDetail from './components/courseDetail/courseDetail'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -14,9 +17,10 @@ function App() {
     <div className="App">
         <NavBar></NavBar>
     <Routes>
-        <Route path='/' element = { <Home />} />
-        <Route path='/signup' element={ <UserSignUp/> }/>
-        <Route path='/signin' element={ <UserSignIn/> }/>
+        <Route path='/home' element = { <Home />} />
+        <Route path='/courses' element={ <Courses/> }/>
+        <Route path='/wishlist' element={ <Wishlist/> }/>
+        <Route path='/course/:id' element={<CourseDetail/> }/>
         {/* <Route path='/' element={ </> }/> */}
         {/* <Route path='/signup' element={ <UserSignUp/> }/> */}
 
