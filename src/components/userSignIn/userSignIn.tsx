@@ -12,6 +12,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import qs from 'qs';
+import {Navigate} from "react-router-dom";
+import {useState} from "react";
+import Home from "../home/home";
+
 
 function Copyright(props: any) {
   return (
@@ -28,12 +34,38 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
+ function login(request: any){
+  const options = {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    data: qs.stringify(request),
+    url:'https://localhost:8443/api/login',
+  };
+  return axios(options);
+}
+
 export default function UserSignIn() {
+
+  const [isSuccessfulLogin, setSuccessfulLogin] = useState<number>(-1)
+  const [token,setToken] = useState<string>("");
+  const [failedAttempt,setFailedAttempt] = useState<number>(0)
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    login({
+      username: data.get('email'),
+      password: data.get('password'),
+    }).then(r => {
+      setSuccessfulLogin(1);
+      setFailedAttempt(0)
+      setToken(r.data.access_token)
+    }).catch(error => {
+      setSuccessfulLogin(0);
+      setFailedAttempt(failedAttempt+1)
+    });
     console.log({
-      email: data.get('email'),
+      username: data.get('email'),
       password: data.get('password'),
     });
   };
@@ -86,9 +118,15 @@ export default function UserSignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={failedAttempt>=3}
             >
               Sign In
             </Button>
+            {isSuccessfulLogin == 0 && <div>Wrong credentials</div>}
+            {failedAttempt >=3 && <div>User Blocked for 10 hours. Contact CEO - Soumosir Dutta</div>}
+            {isSuccessfulLogin == 1 && token != "" && <Navigate
+                to="/"
+            />}
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
