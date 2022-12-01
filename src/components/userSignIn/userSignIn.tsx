@@ -60,6 +60,8 @@ export default function UserSignIn() {
       setSuccessfulLogin(1);
       setFailedAttempt(0)
       setToken(r.data.access_token)
+      console.log(r.data.access_token);
+      window.localStorage.setItem('courseHubtoken',r.data.access_token)
     }).catch(error => {
       setSuccessfulLogin(0);
       setFailedAttempt(failedAttempt+1)
@@ -126,6 +128,7 @@ export default function UserSignIn() {
             {failedAttempt >=3 && <div>User Blocked for 10 hours. Contact CEO - Soumosir Dutta</div>}
             {isSuccessfulLogin == 1 && token != "" && <Navigate
                 to="/home"
+                state = {token}
             />}
             <Grid container>
               <Grid item xs>
