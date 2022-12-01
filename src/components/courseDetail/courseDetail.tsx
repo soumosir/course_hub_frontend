@@ -13,6 +13,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useParams } from 'react-router-dom';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import {useLocation} from 'react-router-dom';
+import { card } from '../interfaces/interface'
 
 function Copyright(props: any) {
   return (
@@ -31,29 +36,53 @@ const theme = createTheme();
 
 export default function CourseDetail() {
     const params = useParams();
-    console.log(params.id)
+    const location = useLocation();
+    // console.log(params.id)
+    // console.log(location.state.courseName)
+    let course = location.state.course
   return (
+    course.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active, isWishlist}: card) => ( 
     <ThemeProvider theme={theme}>
       <Container component="main">
         <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>
-                    {params.id}
+                    {courseCode} - {courseName}
         </Typography>
-        {/* <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-         
-        </Box> */}
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        {/* <Card sx={{ minWidth: 275, m: 5 }}>
+            <CardContent>
+                <Typography sx={{ fontSize: 20 }} gutterBottom>
+                    {courseCode} - {courseName}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    Instructor: {courseInstructor}
+                </Typography>
+                <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
+                    Start Date: {courseStartDate}
+                </Typography>
+                <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
+                    End Date: {courseEndDate}
+                </Typography>
+                <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
+                    Total Seats: {totalSeats}
+                </Typography>
+                <Typography sx={{ fontSize: 14, mb:1.5 }} color="text.secondary">
+                    Remaining Seats: {remainingSeats}
+                </Typography>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                    {courseDescription}
+                </Typography>
+                </CardContent>
+            <CardActions>
+                <Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>
+                {isWishlist ? 
+                    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
+                :
+                    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
+                }
+            </CardActions>
+        </Card> */}
       </Container>
     </ThemeProvider>
+  ))
   );
 }

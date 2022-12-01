@@ -77,7 +77,13 @@ export default function courseCard({data}: any) {
     let navigate = useNavigate();
     const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
         // Somewhere in your code, e.g. inside a handler:
-        navigate("/course/"+event.currentTarget.getAttribute("id")); 
+        // console.log(data.courseCode, data.courseInstructor)
+        let courseCode = event.currentTarget.getAttribute("id")
+        let filteredData = data.filter((course: { courseCode: string | null; }) => {
+            return course.courseCode === courseCode;
+          });
+        console.log(filteredData)
+        navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
     };
     const handleWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, isWishlist:boolean){
         // Somewhere in your code, e.g. inside a handler:
@@ -114,7 +120,7 @@ export default function courseCard({data}: any) {
                             </Typography>
                             </CardContent>
                         <CardActions>
-                            <Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>
+                            <Button id={courseCode} onClick={event => handleCourseClick(event, data)} size="small">Go to the course </Button>
                             {isWishlist ? 
                                 <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
                             :
