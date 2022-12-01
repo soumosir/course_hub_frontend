@@ -56,6 +56,9 @@ export default function CourseDetail() {
     // console.log(location.state.courseName)
     let course = location.state.course
 
+    // const [examsList, setExamList] = useState([])
+    // const [contentList, setContentList] = useState([])
+
     function isUserEnrolled(courseCode: string | null | undefined){
         const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') as string);
         let filteredData = enrolledCourses.filter((course: { code: string | null; }) => {

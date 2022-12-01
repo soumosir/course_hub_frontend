@@ -22,13 +22,13 @@ export interface course {
     totalSeats: number
 }
 
-export interface exams {
+export interface exam {
     id: number,
     name: string,
     type: string
 }
 
-export interface contents {
+export interface content {
     id: number,
     name: string,
     type: string
