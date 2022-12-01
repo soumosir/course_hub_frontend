@@ -7,7 +7,7 @@ export class AppService {
     public async getCourses(): Promise<any> {
         const options = {
             method: 'GET',
-            headers: { 'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzZHV0dGEiLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0Ojg0NDMvYXBpL2xvZ2luIiwiZXhwIjoxNjY5OTI5NzcwfQ.5aBNcusBNLX7WvuGgQmLCyIKZ2pVib775fzdRoErVqs' },
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}` },
             url:'https://localhost:8443/api/course',
         };
 

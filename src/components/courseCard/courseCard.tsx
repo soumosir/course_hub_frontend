@@ -65,7 +65,7 @@ const theme = createTheme();
 // let navigate = useNavigate();
 // const handleCourseNavigation = (event: React.MouseEvent<HTMLButtonElement>) => {
 //     // Somewhere in your code, e.g. inside a handler:
-//     navigate(event.currentTarget.innerText.toLowerCase()); 
+//     navigate(event.currentTarget.innerText.toLowerCase());
 //     // setAnchorElNav(null);
 //   };
 
@@ -80,11 +80,12 @@ export default function courseCard({data}: any) {
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
         let courseCode = event.currentTarget.getAttribute("id")
-        let filteredData = data.filter((course: { courseCode: string | null; }) => {
-            return course.courseCode === courseCode;
+        console.log(courseCode);
+        let filteredData = data.filter((course: { code: string | null; }) => {
+            return course.code === courseCode;
           });
         console.log(filteredData)
-        navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
+        navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}});
     };
     const handleWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, isWishlist:boolean){
         // Somewhere in your code, e.g. inside a handler:
@@ -122,7 +123,7 @@ export default function courseCard({data}: any) {
                             </CardContent>
                         <CardActions>
                             <Button id={code} onClick={event => handleCourseClick(event)} size="small">Go to the course </Button>
-                            {/* {isWishlist ? 
+                            {/* {isWishlist ?
                                 <Button id={code} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
                             :
                                 <Button id={code} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
@@ -134,7 +135,7 @@ export default function courseCard({data}: any) {
         ))
     );
 
-    
+
 
 
 }

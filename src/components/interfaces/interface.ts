@@ -1,12 +1,12 @@
 export interface card {
-    courseCode: string,
-    courseName: string,
-    courseInstructor: string,
-    courseStartDate: string,
-    courseEndDate: string,
+    code: string,
+    name: string,
+    instructor: string,
+    startTime: string,
+    endTime: string,
     totalSeats: number,
     remainingSeats: number,
-    courseDescription: string,
+    description: string,
     active: 1,
     isWishlist: boolean
 }

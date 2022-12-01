@@ -24,7 +24,7 @@ function Copyright(props: any) {
   );
 }
 
-function getEnrolledUsers() {
+function getEnrolledCourses() {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
@@ -51,7 +51,7 @@ export default function Home(props: any) {
 
     React.useEffect(() => {
         localStorage.getItem('courseHubtoken') != null &&
-        getEnrolledUsers().then(r => {
+        getEnrolledCourses().then(r => {
             // console.log("OBJECT")
             // console.log(r.data)
             // setCourseList(r.data)

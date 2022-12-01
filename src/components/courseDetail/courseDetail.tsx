@@ -55,27 +55,35 @@ export default function CourseDetail() {
     // console.log(params.id)
     // console.log(location.state.courseName)
     let course = location.state.course
+
+    function isUserEnrolled(courseCode: string | null | undefined){
+        const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') as string);
+        let filteredData = enrolledCourses.filter((course: { code: string | null; }) => {
+            return course.code === courseCode;
+        });
+        return filteredData.length > 0;
+    }
   return (
-    course.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active, isWishlist}: card) => (
+    course.map(({code, name, instructor,  startTime, endTime, totalSeats, remainingSeats, description, active, isWishlist}: card) => (
     <ThemeProvider theme={theme}>
       <Container component="main">
         <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>
-                    {courseCode} - {courseName}
+                    {code} - {name}
         </Typography>
          <Card sx={{ minWidth: 275, m: 5 }}>
             <CardContent>
                 <Typography sx={{ fontSize: 20 }} gutterBottom>
-                    {courseCode} - {courseName}
+                    {code} - {name}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    Instructor: {courseInstructor}
+                    Instructor: {instructor}
                 </Typography>
                 <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
-                    Start Date: {courseStartDate}
+                    Start Date: {startTime}
                 </Typography>
                 <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
-                    End Date: {courseEndDate}
+                    End Date: {endTime}
                 </Typography>
                 <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                     Total Seats: {totalSeats}
@@ -84,11 +92,11 @@ export default function CourseDetail() {
                     Remaining Seats: {remainingSeats}
                 </Typography>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                    {courseDescription}
+                    {description}
                 </Typography>
                 </CardContent>
             <CardActions>
-                <Button id = {courseCode} onClick={enrollInCourse} size="small">Enroll in Course</Button>
+                <Button id = {code} onClick={enrollInCourse} size="small" disabled={isUserEnrolled(code)}>{!isUserEnrolled(code)? <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
                 {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
                 {/*{isWishlist ? */}
                 {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}
