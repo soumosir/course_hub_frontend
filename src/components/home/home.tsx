@@ -7,6 +7,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {Navigate} from "react-router-dom";
+import axios from "axios";
+import {useState} from "react";
 
 function Copyright(props: any) {
   return (
@@ -21,12 +24,51 @@ function Copyright(props: any) {
   );
 }
 
+function getEnrolledUsers() {
+    const options = {
+        method: 'GET',
+        headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
+        url:'https://localhost:8443/api/course/enrolled',
+    };
+    // console.log(options);
+    return axios(options)
+}
+
+function getWishlist() {
+    const options = {
+        method: 'GET',
+        headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
+        url:'https://localhost:8443/api/course/wishlist',
+    };
+    // console.log(options);
+    return axios(options)
+}
+
 const theme = createTheme();
 
 export default function Home(props: any) {
+    // const [courseList, setCourseList] = useState([])
 
-  return (
+    React.useEffect(() => {
+        localStorage.getItem('courseHubtoken') != null &&
+        getEnrolledUsers().then(r => {
+            // console.log("OBJECT")
+            // console.log(r.data)
+            // setCourseList(r.data)
+            localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
+        })
+        getWishlist().then(r => {
+            localStorage.setItem('wishlist',JSON.stringify(r.data));
+
+        })
+    }, []);
+
+
+    return (
     <ThemeProvider theme={theme}>
+        {localStorage.getItem('courseHubtoken') == null && <Navigate
+            to="/signin"
+        />}
       <Container component="main">
         <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>

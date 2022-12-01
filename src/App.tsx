@@ -11,8 +11,10 @@ import Wishlist from './components/wishlist/wishlist'
 import CourseDetail from './components/courseDetail/courseDetail'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  // const [count, setCount] = useState(0)
+  //   window.addEventListener("beforeunload", function(e){
+  //       localStorage.clear();
+  //   }, false);
   return (
     <div className="App">
         <NavBar></NavBar>

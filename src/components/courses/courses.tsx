@@ -16,6 +16,7 @@ import CourseCard from '../courseCard/courseCard';
 import { AppService } from "../appService/appService";
 import {useState} from "react";
 import { course } from '../interfaces/interface'
+import {Navigate} from "react-router-dom";
 
 
 function Copyright(props: any) {
@@ -44,7 +45,7 @@ const response = [
         courseDescription: "This course teaches design patterns and principles in detail",
         active: 1,
         isWishlist: false
-    }, 
+    },
     {
         courseCode: "ENPM614",
         courseName: "Software Design And Implementation",
@@ -105,11 +106,14 @@ export default function Courses() {
             console.log(r.data)
             setCourseList(r.data)
         })
-      }, []);    
-    
+      }, []);
+
 
   return (
     <ThemeProvider theme={theme}>
+        {localStorage.getItem('courseHubtoken') == null && <Navigate
+            to="/signin"
+        />}
       <Container component="main">
       <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>

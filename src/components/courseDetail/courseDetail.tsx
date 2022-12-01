@@ -18,6 +18,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import {useLocation} from 'react-router-dom';
 import { card } from '../interfaces/interface'
+import qs from "qs";
+import axios from "axios";
 
 function Copyright(props: any) {
   return (
@@ -34,6 +36,19 @@ function Copyright(props: any) {
 
 const theme = createTheme();
 
+function enrollInCourse() {
+    const options = {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
+        data: {courseId:11},
+        url:'https://localhost:8443/api/course/enrolluser',
+    };
+    // console.log(options);
+     axios(options).then((data) =>{console.log(data)}).catch((err) => {
+         console.log(err);
+     });
+}
+
 export default function CourseDetail() {
     const params = useParams();
     const location = useLocation();
@@ -41,14 +56,14 @@ export default function CourseDetail() {
     // console.log(location.state.courseName)
     let course = location.state.course
   return (
-    course.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active, isWishlist}: card) => ( 
+    course.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active, isWishlist}: card) => (
     <ThemeProvider theme={theme}>
       <Container component="main">
         <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>
                     {courseCode} - {courseName}
         </Typography>
-        {/* <Card sx={{ minWidth: 275, m: 5 }}>
+         <Card sx={{ minWidth: 275, m: 5 }}>
             <CardContent>
                 <Typography sx={{ fontSize: 20 }} gutterBottom>
                     {courseCode} - {courseName}
@@ -73,14 +88,15 @@ export default function CourseDetail() {
                 </Typography>
                 </CardContent>
             <CardActions>
-                <Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>
-                {isWishlist ? 
-                    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
-                :
-                    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
-                }
+                <Button id = {courseCode} onClick={enrollInCourse} size="small">Enroll in Course</Button>
+                {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
+                {/*{isWishlist ? */}
+                {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}
+                {/*:*/}
+                {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>*/}
+                {/*}*/}
             </CardActions>
-        </Card> */}
+        </Card>
       </Container>
     </ThemeProvider>
   ))
