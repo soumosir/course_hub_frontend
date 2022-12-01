@@ -13,6 +13,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CourseCard from '../courseCard/courseCard';
+import { AppService } from "../appService/appService";
+import {useState} from "react";
+import { course } from '../interfaces/interface'
+
 
 function Copyright(props: any) {
   return (
@@ -92,7 +96,18 @@ const response = [
 ]
 
 export default function Courses() {
-  
+
+    const [courseList, setCourseList] = useState([])
+    const appService = new AppService()
+    React.useEffect(() => {
+        appService.getCourses().then(r => {
+            console.log("OBJECT")
+            console.log(r.data)
+            setCourseList(r.data)
+        })
+      }, []);    
+    
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
@@ -100,7 +115,7 @@ export default function Courses() {
         <Typography variant='h3' m={5} gutterBottom>
             Courses
         </Typography>
-        <CourseCard data={response} />
+        <CourseCard data={courseList} />
       </Container>
     </ThemeProvider>
   );

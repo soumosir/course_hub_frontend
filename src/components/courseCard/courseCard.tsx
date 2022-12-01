@@ -16,7 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { card } from '../interfaces/interface'
+import { card, course } from '../interfaces/interface'
 import { jsx } from '@emotion/react';
 import { useNavigate } from "react-router-dom";
 
@@ -73,7 +73,8 @@ const theme = createTheme();
 // export default courseCard
 
 export default function courseCard({data}: any) {
-    
+    console.log("Course Card")
+    console.log(data)
     let navigate = useNavigate();
     const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
         // Somewhere in your code, e.g. inside a handler:
@@ -91,41 +92,41 @@ export default function courseCard({data}: any) {
     };
 
     return (
-        data.map(({courseCode, courseName, courseInstructor,  courseStartDate, courseEndDate, totalSeats, remainingSeats, courseDescription, active, isWishlist}: card) => (
+        data.map(({name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
             <ThemeProvider theme={theme}>
-                <Container component="main">
+                <Container key = {code} component="main">
                 <CssBaseline />
-                    <Card sx={{ minWidth: 275, m: 5 }}>
+                    <Card key = {code} sx={{ minWidth: 275, m: 5 }}>
                         <CardContent>
                             <Typography sx={{ fontSize: 20 }} gutterBottom>
-                                {courseCode} - {courseName}
+                                {name} - {code}
                             </Typography>
                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                Instructor: {courseInstructor}
+                                Instructor: {instructor}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
-                                Start Date: {courseStartDate}
+                                Start Date: {startTime}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
-                                End Date: {courseEndDate}
+                                End Date: {endTime}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 Total Seats: {totalSeats}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb:1.5 }} color="text.secondary">
-                                Remaining Seats: {remainingSeats}
+                                Remaining Seats: 0
                             </Typography>
                             <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                                {courseDescription}
+                                {description}
                             </Typography>
                             </CardContent>
                         <CardActions>
-                            <Button id={courseCode} onClick={event => handleCourseClick(event, data)} size="small">Go to the course </Button>
-                            {isWishlist ? 
-                                <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
+                            <Button id={code} onClick={event => handleCourseClick(event)} size="small">Go to the course </Button>
+                            {/* {isWishlist ? 
+                                <Button id={code} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
                             :
-                                <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
-                            }
+                                <Button id={code} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
+                            } */}
                         </CardActions>
                     </Card>
                 </Container>

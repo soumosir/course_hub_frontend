@@ -10,3 +10,14 @@ export interface card {
     active: 1,
     isWishlist: boolean
 }
+
+export interface course {
+    id: number,
+    name: string,
+    code: string,
+    description: string,
+    instructor: string,
+    startTime: string,
+    endTime: string,
+    totalSeats: number
+}
