@@ -21,11 +21,13 @@ function App() {
         <Route path='/courses' element={ <Courses/> }/>
         <Route path='/wishlist' element={ <Wishlist/> }/>
         <Route path='/course/:id' element={<CourseDetail/> }/>
+        <Route path='/signin' element={<UserSignIn/> }/>
         {/* <Route path='/' element={ </> }/> */}
         {/* <Route path='/signup' element={ <UserSignUp/> }/> */}
-      
+
     </Routes>
     </div>
+
   )
 }
 

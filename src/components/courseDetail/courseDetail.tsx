@@ -47,8 +47,6 @@ export default function CourseDetail() {
         <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>
                     {courseCode} - {courseName}
-                    {/* A */}
-                    {/* {location.state} */}
         </Typography>
         {/* <Card sx={{ minWidth: 275, m: 5 }}>
             <CardContent>
