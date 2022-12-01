@@ -99,7 +99,7 @@ export default function courseCard({data}: any) {
                     <Card key = {code} sx={{ minWidth: 275, m: 5 }}>
                         <CardContent>
                             <Typography sx={{ fontSize: 20 }} gutterBottom>
-                                {name} - {code}
+                                {code} - {name}
                             </Typography>
                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                 Instructor: {instructor}
