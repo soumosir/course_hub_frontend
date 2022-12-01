@@ -19,6 +19,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { card, course } from '../interfaces/interface'
 import { jsx } from '@emotion/react';
 import { useNavigate } from "react-router-dom";
+import { AppService } from "../appService/appService";
+import { Alert } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -73,9 +75,10 @@ const theme = createTheme();
 // export default courseCard
 
 export default function courseCard({data}: any) {
-    console.log("Course Card")
-    console.log(data)
+    
     let navigate = useNavigate();
+    let appService = new AppService();
+
     const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
@@ -83,17 +86,44 @@ export default function courseCard({data}: any) {
         let filteredData = data.filter((course: { courseCode: string | null; }) => {
             return course.courseCode === courseCode;
           });
-        console.log(filteredData)
+        // console.log(filteredData)
         navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
     };
-    const handleWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, isWishlist:boolean){
+
+    const handleAddWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
         // Somewhere in your code, e.g. inside a handler:
-        console.log(event.currentTarget.getAttribute("id"), isWishlist)
+        
+        const request = {
+            "wishlistId": courseId
+        }
+        appService.addToWishlist(request).then(r => {
+            <Alert severity="error">This is an error alert — check it out!</Alert>
+            console.log("SUCCESS");
+          }).catch(error => {
+            <Alert severity="error">This is an error alert — check it out!</Alert>
+            console.log("FAILED");
+          });
     };
 
+    const handleRemoveWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
+        // Somewhere in your code, e.g. inside a handler:
+        
+        const request = {
+            "wishlistId": courseId
+        }
+        appService.addToWishlist(request).then(r => {
+            console.log("SUCCESS");
+          }).catch(error => {
+            console.log("FAILED");
+          });
+    };
+
+    // const [isSuccessfulWishlist, setSuccessfulLogin] = useState<number>(-1)
+    const isWishlist = false
     return (
-        data.map(({name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
+        data.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
             <ThemeProvider theme={theme}>
+                
                 <Container key = {code} component="main">
                 <CssBaseline />
                     <Card key = {code} sx={{ minWidth: 275, m: 5 }}>
@@ -122,11 +152,11 @@ export default function courseCard({data}: any) {
                             </CardContent>
                         <CardActions>
                             <Button id={code} onClick={event => handleCourseClick(event)} size="small">Go to the course </Button>
-                            {/* {isWishlist ? 
-                                <Button id={code} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>
+                            {isWishlist ? 
+                                <Button id={code} onClick={event => handleRemoveWishlistClick(event, id)} size="small">Remove from Wishlist</Button>
                             :
-                                <Button id={code} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>
-                            } */}
+                                <Button id={code} onClick={event => handleAddWishlistClick(event, id)} size="small">Add to Wishlist</Button>
+                            }
                         </CardActions>
                     </Card>
                 </Container>
