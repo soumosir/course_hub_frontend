@@ -21,3 +21,15 @@ export interface course {
     endTime: string,
     totalSeats: number
 }
+
+export interface exams {
+    id: number,
+    name: string,
+    type: string
+}
+
+export interface contents {
+    id: number,
+    name: string,
+    type: string
+}

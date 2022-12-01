@@ -100,10 +100,16 @@ export default function Courses() {
 
     const [courseList, setCourseList] = useState([])
     const appService = new AppService()
+    let isWishlist = false
     React.useEffect(() => {
         appService.getCourses().then(r => {
             console.log("OBJECT")
             console.log(r.data)
+            let enrolledCourses = localStorage.getItem('enrolledCourses')
+            let wishlistCourses = localStorage.getItem('wishlist')
+            // let filteredCourses = r.data.filter((course: course) => {
+            //     return !enrolledCourses.indexOf(course.id) === -1;
+            // });
             setCourseList(r.data)
         })
       }, []);
@@ -119,7 +125,7 @@ export default function Courses() {
         <Typography variant='h3' m={5} gutterBottom>
             Courses
         </Typography>
-        <CourseCard data={courseList} />
+        <CourseCard data={[courseList, isWishlist, false]} />
       </Container>
     </ThemeProvider>
   );

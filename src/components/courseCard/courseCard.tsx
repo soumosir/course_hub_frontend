@@ -78,13 +78,25 @@ export default function courseCard({data}: any) {
     
     let navigate = useNavigate();
     let appService = new AppService();
+    let isWishlist = data[1]
+    let isHome = data[2]
+
+    let [courseList, setCourseList] = React.useState([])
+    React.useEffect(() => {
+        setCourseList(data[0])
+      }, data[0]);
+
+    console.log(data[0])
+    console.log("CourseList")
+    console.log(courseList)
+    
 
     const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
         let courseCode = event.currentTarget.getAttribute("id")
         console.log(courseCode);
-        let filteredData = data.filter((course: { code: string | null; }) => {
+        let filteredData = courseList.filter((course: { code: string | null; }) => {
             return course.code === courseCode;
           });
         // console.log(filteredData)
@@ -99,7 +111,24 @@ export default function courseCard({data}: any) {
         }
         appService.addToWishlist(request).then(r => {
             <Alert severity="error">This is an error alert — check it out!</Alert>
-            console.log("SUCCESS");
+            console.log("SUCCESS ARD");
+            let filteredCourseList = courseList.filter((course: course) => {
+                return course.id != courseId;
+            });
+            setCourseList(filteredCourseList)
+
+            
+            let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
+            console.log(typeof(wishlistCourses))
+            
+            let addedCourse = courseList.filter((course: course) => {
+                return course.id == courseId;
+            });
+            console.log("Wishlish Courses", "Added Courses")
+            console.log(wishlistCourses, addedCourse)
+            const mergedObj = Object.assign(wishlistCourses, addedCourse);
+            localStorage.setItem('wishlist',JSON.stringify(mergedObj))
+
           }).catch(error => {
             <Alert severity="error">This is an error alert — check it out!</Alert>
             console.log("FAILED");
@@ -112,17 +141,27 @@ export default function courseCard({data}: any) {
         const request = {
             "wishlistId": courseId
         }
-        appService.addToWishlist(request).then(r => {
-            console.log("SUCCESS");
-          }).catch(error => {
+        appService.removeFromWishlist(request).then(r => {
+            <Alert severity="error">This is an error alert — check it out!</Alert>
+            console.log("SUCCESS ARD");
+            let filteredCourseList = courseList.filter((course: course) => {
+                return course.id != courseId;
+            });
+            setCourseList(filteredCourseList)
+            localStorage.setItem('wishlist',JSON.stringify(filteredCourseList))
+
+        }).catch(error => {
+            <Alert severity="error">This is an error alert — check it out!</Alert>
             console.log("FAILED");
-          });
+        });
     };
 
     // const [isSuccessfulWishlist, setSuccessfulLogin] = useState<number>(-1)
-    const isWishlist = false
+    // const isWishlist = false
+    console.log("CourseLIST MAP")
+    console.log(courseList)
     return (
-        data.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
+        courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
             <ThemeProvider theme={theme}>
                 
                 <Container key = {code} component="main">
@@ -153,11 +192,12 @@ export default function courseCard({data}: any) {
                             </CardContent>
                         <CardActions>
                             <Button id={code} onClick={event => handleCourseClick(event)} size="small">Go to the course </Button>
-                            {isWishlist ? 
+                            {isHome == false ?
+                            isWishlist ? 
                                 <Button id={code} onClick={event => handleRemoveWishlistClick(event, id)} size="small">Remove from Wishlist</Button>
                             :
                                 <Button id={code} onClick={event => handleAddWishlistClick(event, id)} size="small">Add to Wishlist</Button>
-                            }
+                            :""}
                         </CardActions>
                     </Card>
                 </Container>

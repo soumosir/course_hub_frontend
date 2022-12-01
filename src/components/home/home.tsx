@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Navigate} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
+import CourseCard from '../courseCard/courseCard';
 
 function Copyright(props: any) {
   return (
@@ -49,12 +50,16 @@ const theme = createTheme();
 export default function Home(props: any) {
     // const [courseList, setCourseList] = useState([])
 
+    const [enrolledCourseList, setEnrolledCourseList] = useState([])
+
+
     React.useEffect(() => {
         localStorage.getItem('courseHubtoken') != null &&
         getEnrolledCourses().then(r => {
             // console.log("OBJECT")
             // console.log(r.data)
             // setCourseList(r.data)
+            setEnrolledCourseList(r.data)
             localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
         })
         getWishlist().then(r => {
@@ -63,7 +68,8 @@ export default function Home(props: any) {
         })
     }, []);
 
-
+    let isHome = true
+    let isWishlist = false
     return (
     <ThemeProvider theme={theme}>
         {localStorage.getItem('courseHubtoken') == null && <Navigate
@@ -74,20 +80,11 @@ export default function Home(props: any) {
         <Typography variant='h3' m={5} gutterBottom>
                     Home
         </Typography>
-        {/* <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-
-        </Box> */}
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+      <CssBaseline />
+        <Typography variant='h4' m={5} gutterBottom>
+            Enrolled Courses
+        </Typography>
+        <CourseCard data={[enrolledCourseList, isWishlist, isHome]} />
       </Container>
     </ThemeProvider>
   );

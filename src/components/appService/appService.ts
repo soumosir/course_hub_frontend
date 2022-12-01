@@ -29,6 +29,19 @@ export class AppService {
         return response
     }
 
+    public async removeFromWishlist(request: any): Promise<any> {
+        const options = {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
+            data: request,
+            url:'https://localhost:8443/api/course/removewishlist',
+        };
+
+        const response = axios(options)
+        console.log(response)
+        return response
+    }
+
     public async addUser(user: any) {
         const response = await axios.post(`/api/user`, {user});
         return response.data;

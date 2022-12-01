@@ -97,7 +97,10 @@ const response = [
 ]
 
 export default function Wishlist() {
-  
+  let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
+  console.log("WISHLIST")
+  console.log(wishlistCourses)
+  let isWishlist = true
   return (
     <ThemeProvider theme={theme}>
       <Container component="main">
@@ -105,7 +108,7 @@ export default function Wishlist() {
         <Typography variant='h3' m={5} gutterBottom>
                     Wishlist
         </Typography>
-        <CourseCard data={response} />
+        <CourseCard data={[wishlistCourses, isWishlist, false]} />
       </Container>
     </ThemeProvider>
   );
