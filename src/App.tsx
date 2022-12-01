@@ -9,6 +9,7 @@ import Home from './components/home/home'
 import Courses from './components/courses/courses'
 import Wishlist from './components/wishlist/wishlist'
 import CourseDetail from './components/courseDetail/courseDetail'
+import Content from "./components/courseDetail/content";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -24,6 +25,7 @@ function App() {
         <Route path='/wishlist' element={ <Wishlist/> }/>
         <Route path='/course/:id' element={<CourseDetail/> }/>
         <Route path='/signin' element={<UserSignIn/> }/>
+        <Route path='/course/:id/content' element={<Content/>}/>
         {/* <Route path='/' element={ </> }/> */}
         {/* <Route path='/signup' element={ <UserSignUp/> }/> */}
 
