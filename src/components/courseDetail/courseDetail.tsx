@@ -87,8 +87,8 @@ export default function CourseDetail() {
     }
 
     function seeContent(id:any) {
-        // console.log(courseList);
-        // first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
+        localStorage.setItem(`content`,JSON.stringify(courseList.contents));
+        first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     }
 
     return (
