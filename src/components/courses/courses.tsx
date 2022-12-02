@@ -115,7 +115,9 @@ export default function Courses() {
       }, []);
 
 
-  return (
+    // @ts-ignore
+    // @ts-ignore
+    return (
     <ThemeProvider theme={theme}>
         {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
@@ -125,6 +127,7 @@ export default function Courses() {
         <Typography variant='h3' m={5} gutterBottom>
             Courses
         </Typography>
+
         <CourseCard data={[courseList, isWishlist, false]} />
       </Container>
     </ThemeProvider>

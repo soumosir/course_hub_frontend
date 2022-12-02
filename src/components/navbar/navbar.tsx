@@ -31,7 +31,7 @@ function NavBar() {
 
   const handleCloseNavMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     // Somewhere in your code, e.g. inside a handler:
-    navigate(event.currentTarget.innerText.toLowerCase()); 
+    navigate(event.currentTarget.innerText.toLowerCase());
     setAnchorElNav(null);
   };
 
@@ -39,7 +39,8 @@ function NavBar() {
     setAnchorElUser(null);
   };
 
-  return (
+  // @ts-ignore
+    return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
