@@ -71,20 +71,32 @@ export default function CourseDetail() {
         })
         return true;
     }
+    function getEnrolledCourses() {
+        const options = {
+            method: 'GET',
+            headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
+            url:'https://localhost:8443/api/course/enrolled',
+        };
+        // console.log(options);
+        return axios(options)
+    }
 
-    function enrollInCourse() {
+    function enrollInCourse(id: any) {
         const options = {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            data: {courseId: course.id},
+            data: {courseId:id},
             url: 'https://localhost:8443/api/course/enrolluser',
         };
         // console.log(options);
         axios(options).then((data) => {
             console.log(data)
+            getEnrolledCourses().then(r => {
+                localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
+            })
         }).catch((err) => {
             console.log(err);
         });
@@ -97,6 +109,10 @@ export default function CourseDetail() {
         first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     }
 
+    // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
+    // @ts-ignore
     return (
         course.map(({
                         id,
@@ -145,7 +161,7 @@ export default function CourseDetail() {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button id={code} onClick={enrollInCourse} size="small"
+                            <Button id={code} onClick={()=> {enrollInCourse(id)}} size="small"
                                     disabled={isUserEnrolled(code)}>{!isUserEnrolled(code) ?
                                 <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
@@ -161,7 +177,7 @@ export default function CourseDetail() {
                     <Typography variant='h4' m={5} gutterBottom>
                         Contents
                     </Typography>
-                    { first && <ContentCard data={courseList.contents} />}
+                    { first && <ContentCard data={courseList.contents} id={id} />}
                     <Typography variant='h4' m={5} gutterBottom>
                         Exams
                     </Typography>

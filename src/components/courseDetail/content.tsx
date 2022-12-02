@@ -8,16 +8,11 @@ const theme = createTheme();
 
 export default function Content() {
     // const [courseList, setCourseList] = useState([])
-    const location = useLocation();
-    let content = JSON.parse(localStorage.getItem('content') as string)
-    console.log(content);
+    const arr = ['https://www.youtube.com/watch?v=BQwj6A99oVc','https://www.youtube.com/watch?v=O753uuutqH8&t=10s&ab_channel=CrashCourse','https://www.youtube.com/watch?v=M_GVUj86VaY&list=RDLVO753uuutqH8&index=2&ab_channel=KeepOnCoding']
     return (
             <ThemeProvider theme={theme}>
                 <h2>Lecture 1</h2>
-                <ReactPlayer url = 'https://www.youtube.com/watch?v=BQwj6A99oVc'/>
-                <br/>
-                <h2>Lecture 2</h2>
-                <ReactPlayer url = 'https://www.youtube.com/watch?v=O753uuutqH8&ab_channel=CrashCourse'/>
+                <ReactPlayer url ={arr[0]}/>
             </ThemeProvider>
         )
 }
