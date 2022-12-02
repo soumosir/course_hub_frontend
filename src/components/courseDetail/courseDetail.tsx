@@ -91,7 +91,9 @@ export default function CourseDetail() {
     }
 
     function seeContent(id:any) {
+        // @ts-ignore
         localStorage.setItem(`content`,JSON.stringify(courseList.contents));
+        // @ts-ignore
         first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     }
 

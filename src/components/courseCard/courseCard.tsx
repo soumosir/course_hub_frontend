@@ -75,7 +75,7 @@ const theme = createTheme();
 // export default courseCard
 
 export default function courseCard({data}: any) {
-    
+
     let navigate = useNavigate();
     let appService = new AppService();
     let isWishlist = data[1]
@@ -86,10 +86,10 @@ export default function courseCard({data}: any) {
         setCourseList(data[0])
       }, data[0]);
 
-    console.log(data[0])
-    console.log("CourseList")
-    console.log(courseList)
-    
+    // console.log(data[0])
+    // console.log("CourseList")
+    // console.log(courseList)
+
 
     const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
         // Somewhere in your code, e.g. inside a handler:
@@ -100,12 +100,12 @@ export default function courseCard({data}: any) {
             return course.code === courseCode;
           });
         // console.log(filteredData)
-        navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
+        navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}});
     };
 
     const handleAddWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
         // Somewhere in your code, e.g. inside a handler:
-        
+
         const request = {
             "wishlistId": courseId
         }
@@ -117,10 +117,10 @@ export default function courseCard({data}: any) {
             });
             setCourseList(filteredCourseList)
 
-            
+
             let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
             console.log(typeof(wishlistCourses))
-            
+
             let addedCourse = courseList.filter((course: course) => {
                 return course.id == courseId;
             });
@@ -137,7 +137,7 @@ export default function courseCard({data}: any) {
 
     const handleRemoveWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
         // Somewhere in your code, e.g. inside a handler:
-        
+
         const request = {
             "wishlistId": courseId
         }
@@ -163,9 +163,10 @@ export default function courseCard({data}: any) {
     return (
         courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
             <ThemeProvider theme={theme}>
-                <Container key = {code} component="main">
+
+                <Container key = {id} component="main">
                 <CssBaseline />
-                    <Card key = {code} sx={{ minWidth: 275, m: 5 }}>
+                    <Card key = {id} sx={{ minWidth: 275, m: 5 }}>
                         <CardContent>
                             <Typography sx={{ fontSize: 20 }} gutterBottom>
                                 {code} - {name}
@@ -192,7 +193,7 @@ export default function courseCard({data}: any) {
                         <CardActions>
                             <Button id={code} onClick={event => handleCourseClick(event)} size="small">Go to the course </Button>
                             {isHome == false ?
-                            isWishlist ? 
+                            isWishlist ?
                                 <Button id={code} onClick={event => handleRemoveWishlistClick(event, id)} size="small">Remove from Wishlist</Button>
                             :
                                 <Button id={code} onClick={event => handleAddWishlistClick(event, id)} size="small">Add to Wishlist</Button>

@@ -12,6 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import qs from "qs";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -26,16 +29,34 @@ function Copyright(props: any) {
   );
 }
 
+function register(request: any){
+  const options = {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    data: request,
+    url:'https://localhost:8443/api/user/register',
+  };
+  return axios(options);
+}
+
 const theme = createTheme();
 
 export default function UserSignUp() {
+  let navigate = useNavigate();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    register({
+      name: data.get('firstName')+' '+data.get('lastName'),
+      username: data.get('username'),
+      email:data.get('email'),
+      password:data.get('password')
+    }).then((r) => {
+      alert("Sign Up Successfull");
+      navigate("/signin");
+    }).catch((err) => {
+      alert(`Sign Up Unsuccessfull + ${err}`);
+    })
   };
 
   return (
@@ -79,7 +100,7 @@ export default function UserSignUp() {
                   autoComplete="family-name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -87,6 +108,16 @@ export default function UserSignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                    required
+                    fullWidth
+                    id="username"
+                    label="UserName"
+                    name="username"
+                    autoComplete="username"
                 />
               </Grid>
               <Grid item xs={12}>
