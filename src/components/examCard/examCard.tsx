@@ -24,7 +24,7 @@ import { Alert } from '@mui/material';
 
 
 
-export default function examCard({data}: any) {
+export default function ExamCard({data}: any) {
     const theme = createTheme();
     let [examList, setExamList] = React.useState([])
     React.useEffect(() => {
@@ -38,26 +38,23 @@ export default function examCard({data}: any) {
         // navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
     };
 
-      return (
-        examList.map(({id, name, type}: exam) => (
+    return (
+        examList.map(({id, name, type}: content) => (
             <ThemeProvider theme={theme}>
                 
                 <Container key = {id} component="main">
                 <CssBaseline />
-                    <Card key = {id} sx={{ minWidth: 275, m: 5 }}>
+                    <Card key = {id} sx={{ m:5 }}>
                         <CardContent>
                             <Typography sx={{ fontSize: 20 }} gutterBottom>
-                                Exams
-                            </Typography>
-                            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                                Name: {name}
+                                {name}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                Type: {type}
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button id={name} onClick={event => handleCourseClick(event, id)} size="small">Go to the course </Button>
+                            <Button id={name} onClick={event => handleCourseClick(event, id)} size="small">Go to the {name} </Button>
                         </CardActions>
                     </Card>
                 </Container>

@@ -163,7 +163,6 @@ export default function courseCard({data}: any) {
     return (
         courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
             <ThemeProvider theme={theme}>
-                
                 <Container key = {code} component="main">
                 <CssBaseline />
                     <Card key = {code} sx={{ minWidth: 275, m: 5 }}>

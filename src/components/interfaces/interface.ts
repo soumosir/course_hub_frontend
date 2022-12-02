@@ -1,4 +1,5 @@
 export interface card {
+    id:number,
     code: string,
     name: string,
     instructor: string,
@@ -8,7 +9,9 @@ export interface card {
     remainingSeats: number,
     description: string,
     active: 1,
-    isWishlist: boolean
+    isWishlist: boolean,
+    exams : any,
+    contents: any
 }
 
 export interface course {
