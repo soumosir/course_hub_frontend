@@ -25,6 +25,10 @@ import { Alert } from '@mui/material';
 
 export default function ContentCard({data}: any): JSX.Element {
 
+    let navigate = useNavigate();
+    function seeContent() {
+        navigate(`/course/11/content`);
+    }
     console.log("CONTENTCARD")
     console.log(data)
     const theme = createTheme();
@@ -36,15 +40,14 @@ export default function ContentCard({data}: any): JSX.Element {
       const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>, contentId: number){
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
-        console.log(contentId);
-        // navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
+          seeContent()
     };
 
       return <>{(
          
         contentList.map(({id, name, type}: content) => (
             <ThemeProvider theme={theme}>
-                
+
                 <Container key = {id} component="main">
                 <CssBaseline />
                     <Card key = {id} sx={{ m:5 }}>
