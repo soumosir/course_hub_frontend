@@ -129,10 +129,10 @@ export default function CourseDetail() {
                                 Instructor: {instructor}
                             </Typography>
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
-                                Start Date: {startTime}
+                                Start Date: {startTime.split("T")[0]}
                             </Typography>
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
-                                End Date: {endTime}
+                                End Date: {endTime.split("T")[0]}
                             </Typography>
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
                                 Total Seats: {totalSeats}

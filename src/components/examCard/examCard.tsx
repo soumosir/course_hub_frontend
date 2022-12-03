@@ -24,7 +24,7 @@ import { Alert } from '@mui/material';
 
 
 
-export default function ExamCard({data}: any) {
+export default function ExamCard({data}: any): JSX.Element {
     const theme = createTheme();
     let [examList, setExamList] = React.useState([])
     React.useEffect(() => {
@@ -38,7 +38,7 @@ export default function ExamCard({data}: any) {
         // navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
     };
 
-    return (
+    return <>{(
         examList.map(({id, name, type}: content) => (
             <ThemeProvider theme={theme}>
                 
@@ -60,5 +60,5 @@ export default function ExamCard({data}: any) {
                 </Container>
             </ThemeProvider>
         ))
-    );
+    )}</>
 }

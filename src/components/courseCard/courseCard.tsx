@@ -20,7 +20,7 @@ import { card, course } from '../interfaces/interface'
 import { jsx } from '@emotion/react';
 import { useNavigate } from "react-router-dom";
 import { AppService } from "../appService/appService";
-import { Alert } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -35,115 +35,67 @@ function Copyright(props: any) {
   );
 }
 
-
 const theme = createTheme();
-// const courseCard = ({data}: any):JSX.Element => (
-//     data.map(({courseCode, courseName, courseDescription, active}: card) => (
-//         <ThemeProvider theme={theme}>
-//             <Container component="main">
-//             <CssBaseline />
-//                 <Card sx={{ minWidth: 275, m: 5 }}>
-//                     <CardContent>
-//                         <Typography sx={{ fontSize: 20 }} gutterBottom>
-//                             {courseCode}
-//                         </Typography>
-//                         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-//                             {courseName}
-//                         </Typography>
-//                         <Typography variant="body2">
-//                             {courseDescription}
-//                         </Typography>
-//                         </CardContent>
-//                     <CardActions>
-//                         <Button size="small"
-//                             >Go to the course</Button>
-//                     </CardActions>
-//                 </Card>
-//             </Container>
-//         </ThemeProvider>
-//     ))
-// )
-
-// let navigate = useNavigate();
-// const handleCourseNavigation = (event: React.MouseEvent<HTMLButtonElement>) => {
-//     // Somewhere in your code, e.g. inside a handler:
-//     navigate(event.currentTarget.innerText.toLowerCase());
-//     // setAnchorElNav(null);
-//   };
-
-
-// export default courseCard
-
-export default function courseCard({data}: any) {
+export default function courseCard({data}: any): JSX.Element {
 
     let navigate = useNavigate();
     let appService = new AppService();
     let isWishlist = data[1]
     let isHome = data[2]
 
+
     let [courseList, setCourseList] = React.useState([])
     React.useEffect(() => {
         setCourseList(data[0])
       }, data[0]);
 
-    // console.log(data[0])
-    // console.log("CourseList")
-    // console.log(courseList)
+      let [wishlistCourses, setWishlistCourses] = React.useState([])
+        React.useEffect(() => {
+        setWishlistCourses(JSON.parse(localStorage.getItem('wishlist') as string))
+      }, []);
+    
 
+    const [isUnuccessfulWishlistAddition, setUnsuccessfulWishlistAddition] = React.useState<boolean>(false)
+    const [isUnuccessfulWishlistDeletion, setUnsuccessfulWishlistDeletion] = React.useState<boolean>(false)
 
     const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
-        // Somewhere in your code, e.g. inside a handler:
-        // console.log(data.courseCode, data.courseInstructor)
         let courseCode = event.currentTarget.getAttribute("id")
-        console.log(courseCode);
         let filteredData = courseList.filter((course: { code: string | null; }) => {
             return course.code === courseCode;
           });
-        // console.log(filteredData)
         navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}});
     };
 
     const handleAddWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
-        // Somewhere in your code, e.g. inside a handler:
-
+        
         const request = {
             "wishlistId": courseId
         }
+
         appService.addToWishlist(request).then(r => {
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-            console.log("SUCCESS ARD");
-            let filteredCourseList = courseList.filter((course: course) => {
-                return course.id != courseId;
-            });
-            setCourseList(filteredCourseList)
-
-
+            
             let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
-            console.log(typeof(wishlistCourses))
-
             let addedCourse = courseList.filter((course: course) => {
                 return course.id == courseId;
             });
-            console.log("Wishlish Courses", "Added Courses")
-            console.log(wishlistCourses, addedCourse)
-            const mergedObj = Object.assign(wishlistCourses, addedCourse);
-            localStorage.setItem('wishlist',JSON.stringify(mergedObj))
+
+            wishlistCourses.push(addedCourse[0])
+            localStorage.setItem('wishlist',JSON.stringify(wishlistCourses))
+            
+            setWishlistCourses(wishlistCourses)
 
           }).catch(error => {
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-            console.log("FAILED");
+            setUnsuccessfulWishlistAddition(true)
           });
     };
 
     const handleRemoveWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
-        // Somewhere in your code, e.g. inside a handler:
-
         const request = {
             "wishlistId": courseId
         }
+
         appService.removeFromWishlist(request).then(r => {
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-            console.log("SUCCESS ARD");
+            
             let filteredCourseList = courseList.filter((course: course) => {
                 return course.id != courseId;
             });
@@ -151,17 +103,30 @@ export default function courseCard({data}: any) {
             localStorage.setItem('wishlist',JSON.stringify(filteredCourseList))
 
         }).catch(error => {
-            <Alert severity="error">This is an error alert — check it out!</Alert>
-            console.log("FAILED");
+            setUnsuccessfulWishlistDeletion(true)
         });
     };
 
-    // const [isSuccessfulWishlist, setSuccessfulLogin] = useState<number>(-1)
-    // const isWishlist = false
-    console.log("CourseLIST MAP")
-    console.log(courseList)
-    return (
-        courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
+    const handleCloseAddWishlist = function(){
+        setUnsuccessfulWishlistAddition(false)
+    }
+
+    const handleCloseRemoveWishlist = function(){
+        setUnsuccessfulWishlistDeletion(false)
+    }
+
+    return <>{(
+        <div>
+            { }
+             { <Container component="main">
+                <Snackbar open= {isUnuccessfulWishlistAddition} onClose={handleCloseAddWishlist} autoHideDuration={4000} >
+                    <Alert severity="error">Unable to add course into wishlist! Please try again later.</Alert>
+                </Snackbar>
+                <Snackbar open= {isUnuccessfulWishlistDeletion} onClose={handleCloseRemoveWishlist} autoHideDuration={4000} >
+                    <Alert severity="error">Unable to delete course from wishlist! Please try again later.</Alert>
+                </Snackbar>
+             </Container> }
+            { courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
             <ThemeProvider theme={theme}>
 
                 <Container key = {id} component="main">
@@ -196,12 +161,19 @@ export default function courseCard({data}: any) {
                             isWishlist ?
                                 <Button id={code} onClick={event => handleRemoveWishlistClick(event, id)} size="small">Remove from Wishlist</Button>
                             :
+                            wishlistCourses.findIndex((e: course) => e.code === code) === -1 ?
                                 <Button id={code} onClick={event => handleAddWishlistClick(event, id)} size="small">Add to Wishlist</Button>
+                            :
+                                <Button id={code} disabled={true} size="small">Already in Wishlist</Button>
                             :""}
                         </CardActions>
                     </Card>
                 </Container>
             </ThemeProvider>
-        ))
-    );
+        ))}
+        </div>
+
+        
+    )}</>
 }
+

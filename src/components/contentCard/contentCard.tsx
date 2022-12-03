@@ -23,7 +23,7 @@ import { AppService } from "../appService/appService";
 import { Alert } from '@mui/material';
 
 
-export default function ContentCard({data}: any) {
+export default function ContentCard({data}: any): JSX.Element {
 
     console.log("CONTENTCARD")
     console.log(data)
@@ -40,7 +40,8 @@ export default function ContentCard({data}: any) {
         // navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
     };
 
-      return (
+      return <>{(
+         
         contentList.map(({id, name, type}: content) => (
             <ThemeProvider theme={theme}>
                 
@@ -62,5 +63,5 @@ export default function ContentCard({data}: any) {
                 </Container>
             </ThemeProvider>
         ))
-    );
+    )}</>
 }
