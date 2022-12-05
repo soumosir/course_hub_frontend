@@ -49,6 +49,7 @@ export default function CourseDetail() {
         return filteredData.length > 0;
     }
 
+<<<<<<< HEAD
     React.useEffect(() => {
       const options = {
         method: 'GET',
@@ -69,6 +70,28 @@ export default function CourseDetail() {
       })
     }, []);
     
+=======
+    function getCourseDetail(id:any) {
+        const options = {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
+            },
+            url: `https://localhost:8443/api/course/${id}`,
+        };
+        // console.log(options);
+        axios(options).then((r) => {
+            // console.log(r.data);
+            setCourseList(r.data);
+            console.log("CourseList")
+            console.log(r.data)
+            setFirst(true);
+            // console.log(courseList)
+        })
+        return true;
+    }
+>>>>>>> 20dc3d6cd2f1cb61776cb11dbaf9922d22060769
     function getEnrolledCourses() {
         const options = {
             method: 'GET',
@@ -100,18 +123,27 @@ export default function CourseDetail() {
         });
     }
 
+<<<<<<< HEAD
     // function seeContent(id:any) {
     //     // @ts-ignore
     //     localStorage.setItem(`content`,JSON.stringify(courseList.contents));
     //     // @ts-ignore
     //     first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     // }
+=======
+    function seeContent(id:any) {
+        // @ts-ignore
+        localStorage.setItem(`content`,JSON.stringify(courseList.contents));
+        // @ts-ignore
+        first && navigate(`/course/${id}/content`, {state: {id: 1, content: courseList.contents}});
+    }
+>>>>>>> 20dc3d6cd2f1cb61776cb11dbaf9922d22060769
 
     const handleGradesClick = function(event: React.MouseEvent<HTMLButtonElement>, id: number){
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
         console.log(id);
-        navigate("/grades/"+id); 
+        navigate("/grades/"+id);
     };
 
     // @ts-ignore
@@ -190,7 +222,7 @@ export default function CourseDetail() {
                     <Typography variant='h4' m={5} gutterBottom>
                         <Button id="grades" onClick={event => handleGradesClick(event, id)} size="small">Checkout Grades</Button>
                     </Typography>
-                    
+
                 </Container>
             </ThemeProvider>
         ))
