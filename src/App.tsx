@@ -31,6 +31,7 @@ function App() {
         <Route path='/wishlist' element={ <Wishlist/> }/>
         <Route path='/course/:id' element={<CourseDetail/> }/>
         <Route path='/signin' element={<UserSignIn/> }/>
+        <Route path='/content/:id' element={<Content/>}/>
         <Route path='/course/:id/content' element={<Content/>}/>
         <Route path='/course/add' element={<AddCourse/>}/>
         <Route path='/exam/:id' element={<Exam/> }/>

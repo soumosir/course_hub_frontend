@@ -36,15 +36,13 @@ export default function CourseDetail() {
     const location = useLocation();
     let navigate = useNavigate();
     const [courseList, setCourseList] = useState([])
+
     if(localStorage.getItem('courseHubtoken') == null){
         navigate("/signin")
     }
     const [first,setFirst] = useState(false);
-    // console.log(params.id)
-    // console.log(location.state.courseName)
-    let course = location.state.course
-    // console.log(course[0]);
-
+    console.log("COURSE DETAILS")
+    // getCourseDetail(params.id)
     // getCourseDetail(11);
     function isUserEnrolled(courseCode: string | null | undefined) {
         const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') as string);
@@ -54,26 +52,26 @@ export default function CourseDetail() {
         return filteredData.length > 0;
     }
 
-    function getCourseDetail(id:any) {
-        const options = {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
-            },
-            url: `https://localhost:8443/api/course/${id}`,
-        };
-        // console.log(options);
-        axios(options).then((r) => {
-            // console.log(r.data);
-            setCourseList(r.data);
-            console.log("CourseList")
-            console.log(r.data)
-            setFirst(true);
-            // console.log(courseList)
-        })
-        return true;
-    }
+    React.useEffect(() => {
+      const options = {
+        method: 'GET',
+        headers: {
+            'content-type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
+        },
+        url: `https://localhost:8443/api/course/`+params.id,
+      };
+      console.log("PARAMETER ID",params.id)
+      axios(options).then((r) => {
+        // console.log(r.data);
+        setCourseList([r.data])
+        console.log("CourseList")
+        console.log(r.data)
+        setFirst(true);
+        // console.log(courseList)
+      })
+    }, []);
+
     function getEnrolledCourses() {
         const options = {
             method: 'GET',
@@ -105,12 +103,12 @@ export default function CourseDetail() {
         });
     }
 
-    function seeContent(id:any) {
-        // @ts-ignore
-        localStorage.setItem(`content`,JSON.stringify(courseList.contents));
-        // @ts-ignore
-        first && navigate(`/course/${id}/content`, {state: {id: 1, content: courseList.contents}});
-    }
+    // function seeContent(id:any) {
+    //     // @ts-ignore
+    //     localStorage.setItem(`content`,JSON.stringify(courseList.contents));
+    //     // @ts-ignore
+    //     first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
+    // }
 
     const handleGradesClick = function(event: React.MouseEvent<HTMLButtonElement>, id: number){
         // Somewhere in your code, e.g. inside a handler:
@@ -124,7 +122,7 @@ export default function CourseDetail() {
     // @ts-ignore
     // @ts-ignore
     return (
-        course.map(({
+        courseList.map(({
                         id,
                         code,
                         name,
@@ -140,7 +138,6 @@ export default function CourseDetail() {
                         contents
                     }: card) => (
             <ThemeProvider theme={theme}>
-                {!first&&getCourseDetail(id)}
                 <Container component="main">
                     <CssBaseline/>
                     <Typography variant='h3' m={5} gutterBottom>
@@ -180,18 +177,18 @@ export default function CourseDetail() {
                             {/*:*/}
                             {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Add to Wishlist</Button>*/}
                             {/*}*/}
-                            <Button id={code + 'content'} onClick={seeContent} size="small">See Course Content</Button>
+                            {/* <Button id={code + 'content'} onClick={seeContent} size="small">See Course Content</Button> */}
 
                         </CardActions>
                     </Card>
                     <Typography variant='h4' m={5} gutterBottom>
                         Contents
                     </Typography>
-                    { first && <ContentCard data={courseList.contents} id={id} />}
+                    { first && <ContentCard data={contents} id={id} />}
                     <Typography variant='h4' m={5} gutterBottom>
                         Exams
                     </Typography>
-                    { first && <ExamCard data={courseList.exams} />}
+                    { first && <ExamCard data={exams} />}
                     {/* <ExamCard data={exams}/> */}
                     <Typography variant='h4' m={5} gutterBottom>
                         <Button id="grades" onClick={event => handleGradesClick(event, id)} size="small">Checkout Grades</Button>

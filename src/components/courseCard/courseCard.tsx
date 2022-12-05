@@ -42,12 +42,12 @@ export default function courseCard({data}: any): JSX.Element {
     let appService = new AppService();
     let isWishlist = data[1]
     let isHome = data[2]
-
+    let initialData = data[0]
 
     let [courseList, setCourseList] = React.useState([])
     React.useEffect(() => {
         setCourseList(data[0])
-      }, data[0]);
+      }, [initialData]);
 
       let [wishlistCourses, setWishlistCourses] = React.useState([])
         React.useEffect(() => {
@@ -58,12 +58,12 @@ export default function courseCard({data}: any): JSX.Element {
     const [isUnuccessfulWishlistAddition, setUnsuccessfulWishlistAddition] = React.useState<boolean>(false)
     const [isUnuccessfulWishlistDeletion, setUnsuccessfulWishlistDeletion] = React.useState<boolean>(false)
 
-    const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>){
+    const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
         let courseCode = event.currentTarget.getAttribute("id")
         let filteredData = courseList.filter((course: { code: string | null; }) => {
             return course.code === courseCode;
           });
-        navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}});
+        navigate("/course/"+courseId);
     };
 
     const handleAddWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
@@ -156,7 +156,7 @@ export default function courseCard({data}: any): JSX.Element {
                             </Typography>
                             </CardContent>
                         <CardActions>
-                            <Button id={code} onClick={event => handleCourseClick(event)} size="small">Go to the course </Button>
+                            <Button id={code} onClick={event => handleCourseClick(event, id)} size="small">Go to the course </Button>
                             {isHome == false ?
                             isWishlist ?
                                 <Button id={code} onClick={event => handleRemoveWishlistClick(event, id)} size="small">Remove from Wishlist</Button>

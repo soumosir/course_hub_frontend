@@ -112,10 +112,15 @@ export default function Exam(props: any) {
         getExam(examId).then(r => {
 
             console.log("exam is ", r.data);
+            if(Object.hasOwn(r.data,"error_message")){
+              setLoading(r.data.error_message);
+            }
+            else{
             let questions = JSON.parse(r.data["questions"]);
             console.log(questions);
             setQuestions(questions);
             setLoading("Loaded");
+            }
         }).catch((err) => {
           alert(`Exam doesnot exist`);
           setLoading("Exam doesnot exist");
