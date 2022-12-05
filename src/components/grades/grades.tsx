@@ -42,7 +42,7 @@ export default function Grades(): JSX.Element {
     const params = useParams();
     const courseId = params.id;
     let navigate = useNavigate();
-    const [total,setTotal] = React.useState(0);
+    const [total,setTotal] = React.useState(0.0);
 
     React.useEffect(() => {
         getResult(courseId).then(r => {
@@ -68,10 +68,10 @@ export default function Grades(): JSX.Element {
             });
             
             const results :any = r.data;
-            console.log(" final result ",results);
             setExamList(results);
-            console.log(t,results.length);
+            if(results.length>0){
             t[0] = t[0]/results.length;
+            }
             setTotal(t[0])
             setLoading("Loaded");
         }).catch((err) => {
