@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {createTheme} from "@mui/material/styles";
 import {ThemeProvider} from "@emotion/react";
 import ReactPlayer from "react-player";
