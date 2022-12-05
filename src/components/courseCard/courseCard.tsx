@@ -63,7 +63,7 @@ export default function courseCard({data}: any): JSX.Element {
         let filteredData = courseList.filter((course: { code: string | null; }) => {
             return course.code === courseCode;
           });
-        navigate("/course/"+courseCode, {state: {id: 1, courseId: courseId}});
+        navigate("/course/"+courseId);
     };
 
     const handleAddWishlistClick = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){

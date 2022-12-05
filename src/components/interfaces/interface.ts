@@ -37,6 +37,14 @@ export interface content {
     type: string
 }
 
+export interface contentDetail {
+    id: number,
+    name: string,
+    type: string,
+    url: string,
+    username: string,
+    description: string
+}
 
 export interface resultContent {
     id: number,

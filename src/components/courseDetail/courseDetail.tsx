@@ -56,9 +56,9 @@ export default function CourseDetail() {
             'content-type': 'application/json',
             Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
         },
-        url: `https://localhost:8443/api/course/`+location.state.courseId,
+        url: `https://localhost:8443/api/course/`+params.id,
       };
-      console.log("PARAMETER ID",location.state.courseId)
+      console.log("PARAMETER ID",params.id)
       axios(options).then((r) => {
         // console.log(r.data);    
         setCourseList([r.data])
