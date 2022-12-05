@@ -36,7 +36,10 @@ export default function CourseDetail() {
     const location = useLocation();
     let navigate = useNavigate();
     const [courseList, setCourseList] = useState([])
-    
+
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
     const [first,setFirst] = useState(false);
     console.log("COURSE DETAILS")
     // getCourseDetail(params.id)
@@ -60,7 +63,7 @@ export default function CourseDetail() {
       };
       console.log("PARAMETER ID",params.id)
       axios(options).then((r) => {
-        // console.log(r.data);    
+        // console.log(r.data);
         setCourseList([r.data])
         console.log("CourseList")
         console.log(r.data)
@@ -68,7 +71,7 @@ export default function CourseDetail() {
         // console.log(courseList)
       })
     }, []);
-    
+
     function getEnrolledCourses() {
         const options = {
             method: 'GET',

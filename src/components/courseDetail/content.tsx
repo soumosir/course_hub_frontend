@@ -3,7 +3,6 @@ import {useLocation, useParams} from "react-router-dom";
 import {createTheme} from "@mui/material/styles";
 import {ThemeProvider} from "@emotion/react";
 import ReactPlayer from "react-player";
-import {Document, Page} from "react-pdf";
 import axios from "axios";
 import { contentDetail } from '../interfaces/interface';
 import { Box, Container, CssBaseline, Typography } from '@mui/material';
@@ -15,7 +14,10 @@ export default function Content() {
     const params = useParams();
     const [contentDetails, setContentDetails] = useState([])
     const [loading,setLoading] = useState("Loading...");
-
+    const navigate = useNavigate();
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
     React.useEffect(() => {
         const options = {
           method: 'GET',
@@ -31,7 +33,7 @@ export default function Content() {
           if(Object.hasOwn(r.data,"error_message")){
             setLoading(r.data.error_message)
           }
-          else{    
+          else{
           setContentDetails([r.data])
           setLoading("Loaded")
           console.log("Content Details")
@@ -62,7 +64,7 @@ export default function Content() {
                         {description}
                     </Typography>
                     <Box m={5} sx={{ justifyContent: 'center' }}>
-                        { type == "video" ? 
+                        { type == "video" ?
                         <ReactPlayer width="100%" height={600} url ={url}/>
                         :
                         <object data={url} type="application/pdf" width="100%" height="600">
@@ -72,7 +74,7 @@ export default function Content() {
                     </Box>
                 </Container>
             </ThemeProvider>
-        
+
         ))
 
         : 

@@ -30,7 +30,7 @@ function getResult(id:any) {
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
         url:`https://localhost:8443/api/courseresult/${id}`,
     };
-    
+
     console.log(options);
     return axios(options)
 }
@@ -43,10 +43,12 @@ export default function Grades(): JSX.Element {
     const courseId = params.id;
     let navigate = useNavigate();
     const [total,setTotal] = React.useState(0.0);
-
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
     React.useEffect(() => {
         getResult(courseId).then(r => {
-            
+
             console.log("results are ", r.data);
             console.log(r.data);
             const t = [0.0];
@@ -63,10 +65,10 @@ export default function Grades(): JSX.Element {
                 Object.keys(usera).forEach((an : any)=>{
                     anMap[an] = {...anMap[an],"answered" : usera[an] }
                 })
-                
+
                 element["answerMap"] = anMap;
             });
-            
+
             const results :any = r.data;
             setExamList(results);
             if(results.length>0){
@@ -85,7 +87,7 @@ export default function Grades(): JSX.Element {
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
         console.log(id);
-        navigate("/exam/"+id); 
+        navigate("/exam/"+id);
     };
 
     return (
@@ -135,7 +137,7 @@ export default function Grades(): JSX.Element {
 
         </Container>
 
-        
+
         </>
 
         )
