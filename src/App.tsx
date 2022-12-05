@@ -14,6 +14,7 @@ import Exam from './components/exam/exam'
 import { Alert } from '@mui/material'
 import AlertComponent from './components/alert/alert'
 import Grades from './components/grades/grades'
+import AddCourse from "./components/courses/addcourse";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -31,6 +32,7 @@ function App() {
         <Route path='/course/:id' element={<CourseDetail/> }/>
         <Route path='/signin' element={<UserSignIn/> }/>
         <Route path='/course/:id/content' element={<Content/>}/>
+        <Route path='/course/add' element={<AddCourse/>}/>
         <Route path='/exam/:id' element={<Exam/> }/>
         {/* <Route path='/' element={ </> }/> */}
          <Route path='/signup' element={ <UserSignUp/> }/>

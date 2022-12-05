@@ -58,7 +58,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: `https://localhost:8443/api/course/11`,
+            url: `https://localhost:8443/api/course/${id}`,
         };
         // console.log(options);
         axios(options).then((r) => {
@@ -106,14 +106,14 @@ export default function CourseDetail() {
         // @ts-ignore
         localStorage.setItem(`content`,JSON.stringify(courseList.contents));
         // @ts-ignore
-        first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
+        first && navigate(`/course/${id}/content`, {state: {id: 1, content: courseList.contents}});
     }
 
     const handleGradesClick = function(event: React.MouseEvent<HTMLButtonElement>, id: number){
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
         console.log(id);
-        navigate("/grades/"+id); 
+        navigate("/grades/"+id);
     };
 
     // @ts-ignore
@@ -193,7 +193,7 @@ export default function CourseDetail() {
                     <Typography variant='h4' m={5} gutterBottom>
                         <Button id="grades" onClick={event => handleGradesClick(event, id)} size="small">Checkout Grades</Button>
                     </Typography>
-                    
+
                 </Container>
             </ThemeProvider>
         ))
