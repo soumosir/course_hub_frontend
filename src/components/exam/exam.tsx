@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Navigate} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
 
@@ -37,37 +37,88 @@ function getExam(id:any) {
     return axios(options)
 }
 
-// function submitExam() {
-//     const options = {
-//         method: 'POST',
-//         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-//         url:'https://localhost:8443/api/exam/',
-//     };
-//     // console.log(options);
-//     return axios(options)
-// }
+const postToExam = (exam:any) => {
+    const options = {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
+        data : exam,
+        url:'https://localhost:8443/api/exam/submit',
+    };
+    // console.log(options);
+    return axios(options)
+}
+
+
+
+
 
 const theme = createTheme();
 
 export default function Exam(props: any) {
     // const [courseList, setCourseList] = useState([])
-    const location = useLocation();
-    let q = "{\"how many bytes is  char?\":[\"3\",\"2\",\"1\",\"0\"],\"what is array?\":[\"DS\",\"wall\",\"io\",\"boolean\"],\"what is 1+9?\":[\"3\",\"2\",\"1\",\"10\"],\"what is 1+1?\":[\"3\",\"2\",\"1\",\"0\"]}";
-    q = JSON.parse(q);
-    const [questions,setQuestions] = useState(q);
-    let examId = 8;
+    const params = useParams();
+    
+    const [questions,setQuestions] = useState({});
+    const [loading,setLoading] = useState("Loading...");
+    const [score,setScore] = useState("-1");
+    let examId = params.id;
+    
+    const [answers,setAnswers] = useState(new Map());
+
+    const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log(event.target.name)
+      let newanswers = answers;
+      newanswers.set( (event.target.name) , (event.target as HTMLInputElement).value )
+      setAnswers(newanswers);
+    };
+
+    const submitExam = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      console.log("submit Exam - ",data,answers);
+
+       
+      let jans = Object.fromEntries(answers);
+      jans = JSON.stringify(jans);
+      const dataRequest = {
+        examId : params.id,
+        answers : jans,
+      }
+      console.log(dataRequest);
+
+      postToExam(dataRequest).then((r) => {
+        console.log("Marks is ",r.data["marks"])
+        if(r.data["marks"] || r.data["marks"]==0 ){
+          alert("Exam submission Successfull :: Marks"+r.data["marks"]);
+          setScore("Your score is "+r.data["marks"]+" %. Correct answers are hidden");
+        }
+        else{
+          alert("Exam was submitted earlier");
+          setScore(r.data["error_message"])
+        }
+        
+      }).catch((err) => {
+        alert(`Exam submission Unsuccessfull + ${err}`);
+        console.log(err);
+      })
+    };
+
 
     React.useEffect(() => {
         localStorage.getItem('courseHubtoken') != null &&
         getExam(examId).then(r => {
             
             console.log("exam is ", r.data);
-            let questions = JSON.parse(r.data);
-            questions = "{how many bytes is  char?=[3, 2, 1, 0], what is array?=[DS, wall, io, boolean], what is 1+9?=[3, 2, 1, 10], what is 1+1?=[3, 2, 1, 0]}";
-            questions = JSON.parse(questions);
-            console.log("questions - ",questions);
+            let questions = JSON.parse(r.data["questions"]);
+            console.log(questions);
             setQuestions(questions);
+            setLoading("Loaded");
+        }).catch((err) => {
+          alert(`Exam doesnot exist`);
+          setLoading("Exam doesnot exist");
+          console.log(err);
         })
+
     }, []);
 
 
@@ -81,48 +132,39 @@ export default function Exam(props: any) {
         <Typography variant='h3' m={5} gutterBottom>
                     Exam
         </Typography>
-        {/* {JSON.stringify(questions)} */}
-        
-        <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">how many bytes is  char?</FormLabel>
+        { loading=="Loaded"?
+        <Box component="form" noValidate onSubmit={submitExam} sx={{ mt: 3 }}>  
+        {Object.entries(questions).map((question)=>(
+          <div>
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">{question[0]}</FormLabel>
             <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="female"
-                name="radio-buttons-group"
+                name={question[0]}
+                onChange={handleRadioChange}
             >
-                <FormControlLabel value="3" control={<Radio />} label="3" />
-                <FormControlLabel value="2" control={<Radio />} label="2" />
-                <FormControlLabel value="1" control={<Radio />} label="1" />
+                <FormControlLabel value={question[1][0]} control={<Radio />} label={question[1][0]} />
+                <FormControlLabel value={question[1][1]} control={<Radio />} label={question[1][1]} />
+                <FormControlLabel value={question[1][2]} control={<Radio />} label={question[1][2]} />
+                <FormControlLabel value={question[1][3]} control={<Radio />} label={question[1][3]} />
             </RadioGroup>
-        </FormControl>  
-
-        <br></br>
-
+          </FormControl> 
+          </div>
+        ))}
         
-        <div>
-
-        <FormControl>
-            <FormLabel id="demo-radio-buttons-group-label">how many bytes is  int?</FormLabel>
-            <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="female"
-                name="radio-buttons-group"
-            >
-                <FormControlLabel value="female" control={<Radio />} label="4" />
-                <FormControlLabel value="male" control={<Radio />} label="8" />
-                <FormControlLabel value="other" control={<Radio />} label="16" />
-            </RadioGroup>
-        </FormControl>
-
-        </div>  
-
-        <br></br>
-        <br></br>
-
-        <Button variant="contained">Submit</Button>
+        
+          <Button variant="contained" type="submit" disabled={score!="-1"} >Submit</Button>
+         
+        </Box>
 
       
 
+        
+        :loading}
+        {score=="-1"?  ""
+         :
+         score
+        }
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
