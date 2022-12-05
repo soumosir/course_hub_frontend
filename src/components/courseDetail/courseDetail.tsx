@@ -94,6 +94,7 @@ export default function CourseDetail() {
             console.log(data)
             getEnrolledCourses().then(r => {
                 localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
+                window.location.reload();
             })
         }).catch((err) => {
             console.log(err);

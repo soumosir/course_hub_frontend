@@ -15,6 +15,7 @@ import { Alert } from '@mui/material'
 import AlertComponent from './components/alert/alert'
 import Grades from './components/grades/grades'
 import AddCourse from "./components/courses/addcourse";
+import HomePage from './components/home/homepage'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -26,6 +27,7 @@ function App() {
         <NavBar></NavBar>
         {/* <AlertComponent></AlertComponent> */}
     <Routes>
+        <Route path='/' element = { <HomePage />} />
         <Route path='/home' element = { <Home />} />
         <Route path='/courses' element={ <Courses/> }/>
         <Route path='/wishlist' element={ <Wishlist/> }/>

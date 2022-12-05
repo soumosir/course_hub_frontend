@@ -75,7 +75,15 @@ export default function Content() {
         
         ))
 
-        : loading }
+        : 
+        <ThemeProvider theme={theme}>
+            <Container component="main">
+            <CssBaseline/> 
+                <Typography m={5} sx={{ fontSize: 18 }} color="text.secondary">
+                        {loading}
+                </Typography>
+            </Container>
+        </ThemeProvider> }
         </div>
     );
 }

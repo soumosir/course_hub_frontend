@@ -23,6 +23,7 @@ export interface course {
     startTime: string,
     endTime: string,
     totalSeats: number
+    remainingSeats: number
 }
 
 export interface exam {

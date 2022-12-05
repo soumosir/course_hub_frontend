@@ -126,7 +126,7 @@ export default function courseCard({data}: any): JSX.Element {
                     <Alert severity="error">Unable to delete course from wishlist! Please try again later.</Alert>
                 </Snackbar>
              </Container> }
-            { courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats}: course) => (
+            { courseList.map(({id, name, code, description,  instructor, startTime, endTime, totalSeats, remainingSeats}: course) => (
             <ThemeProvider theme={theme}>
 
                 <Container key = {id} component="main">
@@ -145,12 +145,12 @@ export default function courseCard({data}: any): JSX.Element {
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 End Date: {endTime.split("T")[0]}
                             </Typography>
-                            <Typography sx={{ fontSize: 14, mb: 1.5 }} color="text.secondary">
+                            <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 Total Seats: {totalSeats}
                             </Typography>
-                            {/* <Typography sx={{ fontSize: 14, mb:1.5 }} color="text.secondary">
-                                Remaining Seats: 0
-                            </Typography> */}
+                            <Typography sx={{ fontSize: 14, mb:1.5 }} color="text.secondary">
+                                Remaining Seats: {remainingSeats}
+                            </Typography>
                             <Typography sx={{ fontSize: 14 }} color="text.secondary">
                                 {description}
                             </Typography>

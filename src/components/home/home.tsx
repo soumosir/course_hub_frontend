@@ -81,10 +81,9 @@ export default function Home(props: any) {
         {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
         />}
-      
       <Container component="main">
         <CssBaseline />
-        <Typography variant='h4' m={5} gutterBottom>
+        <Typography variant='h3' m={5} gutterBottom>
             Welcome to course hub, {username}!
         </Typography>
       <CssBaseline />
