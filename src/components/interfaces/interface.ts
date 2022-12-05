@@ -36,3 +36,11 @@ export interface content {
     name: string,
     type: string
 }
+
+
+export interface resultContent {
+    id: number,
+    marks : number,
+    exam : exam,
+    answerMap : any,
+}

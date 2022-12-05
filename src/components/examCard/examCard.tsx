@@ -27,15 +27,16 @@ import { Alert } from '@mui/material';
 export default function ExamCard({data}: any): JSX.Element {
     const theme = createTheme();
     let [examList, setExamList] = React.useState([])
+    let navigate = useNavigate();
     React.useEffect(() => {
         setExamList(data)
       }, [data]);
 
-      const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>, contentId: number){
+      const handleCourseClick = function(event: React.MouseEvent<HTMLButtonElement>, id: number){
         // Somewhere in your code, e.g. inside a handler:
         // console.log(data.courseCode, data.courseInstructor)
-        console.log(contentId);
-        // navigate("/course/"+courseCode, {state: {id: 1, course: filteredData}}); 
+        console.log(id);
+        navigate("/exam/"+id); 
     };
 
     return <>{(
