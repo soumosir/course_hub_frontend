@@ -45,7 +45,7 @@ const response = [
         courseDescription: "This course teaches design patterns and principles in detail",
         active: 1,
         isWishlist: true
-    }, 
+    },
     {
         courseCode: "ENPM614",
         courseName: "Software Design And Implementation",
@@ -99,6 +99,9 @@ const response = [
 export default function Wishlist() {
   let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
   console.log("WISHLIST")
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
   console.log(wishlistCourses)
   let isWishlist = true
   return (

@@ -16,7 +16,7 @@ import CourseCard from '../courseCard/courseCard';
 import { AppService } from "../appService/appService";
 import {useState} from "react";
 import { course } from '../interfaces/interface'
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 
 
 function Copyright(props: any) {
@@ -100,7 +100,12 @@ export default function Courses() {
 
     const [courseList, setCourseList] = useState([])
     const appService = new AppService()
+    const navigate = useNavigate();
     let isWishlist = false
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
+
     React.useEffect(() => {
         appService.getCourses().then(r => {
             console.log("OBJECT")

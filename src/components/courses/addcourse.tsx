@@ -54,6 +54,9 @@ export default function AddCourse() {
     const [content, setContent] = useState(null);
     const [exam, setExam] = useState(null);
     const navigate = useNavigate();
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
 
     const handleContentChange = (e: { target: { files: Blob[]; }; }) => {
         const fileReader = new FileReader();

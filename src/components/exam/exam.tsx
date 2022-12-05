@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Navigate, useParams} from "react-router-dom";
+import {Navigate, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
 
@@ -57,12 +57,15 @@ const theme = createTheme();
 export default function Exam(props: any) {
     // const [courseList, setCourseList] = useState([])
     const params = useParams();
-    
+    const navigate = useNavigate();
     const [questions,setQuestions] = useState({});
     const [loading,setLoading] = useState("Loading...");
     const [score,setScore] = useState("-1");
     let examId = params.id;
-    
+
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
     const [answers,setAnswers] = useState(new Map());
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +80,7 @@ export default function Exam(props: any) {
       const data = new FormData(event.currentTarget);
       console.log("submit Exam - ",data,answers);
 
-       
+
       let jans = Object.fromEntries(answers);
       jans = JSON.stringify(jans);
       const dataRequest = {
@@ -96,7 +99,7 @@ export default function Exam(props: any) {
           alert("Exam was submitted earlier");
           setScore(r.data["error_message"])
         }
-        
+
       }).catch((err) => {
         alert(`Exam submission Unsuccessfull + ${err}`);
         console.log(err);
@@ -107,7 +110,7 @@ export default function Exam(props: any) {
     React.useEffect(() => {
         localStorage.getItem('courseHubtoken') != null &&
         getExam(examId).then(r => {
-            
+
             console.log("exam is ", r.data);
             let questions = JSON.parse(r.data["questions"]);
             console.log(questions);
@@ -133,7 +136,7 @@ export default function Exam(props: any) {
                     Exam
         </Typography>
         { loading=="Loaded"?
-        <Box component="form" noValidate onSubmit={submitExam} sx={{ mt: 3 }}>  
+        <Box component="form" noValidate onSubmit={submitExam} sx={{ mt: 3 }}>
         {Object.entries(questions).map((question)=>(
           <div>
           <FormControl>
@@ -148,18 +151,18 @@ export default function Exam(props: any) {
                 <FormControlLabel value={question[1][2]} control={<Radio />} label={question[1][2]} />
                 <FormControlLabel value={question[1][3]} control={<Radio />} label={question[1][3]} />
             </RadioGroup>
-          </FormControl> 
+          </FormControl>
           </div>
         ))}
-        
-        
+
+
           <Button variant="contained" type="submit" disabled={score!="-1"} >Submit</Button>
-         
+
         </Box>
 
-      
 
-        
+
+
         :loading}
         {score=="-1"?  ""
          :

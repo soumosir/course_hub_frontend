@@ -36,6 +36,9 @@ export default function CourseDetail() {
     const location = useLocation();
     let navigate = useNavigate();
     const [courseList, setCourseList] = useState([])
+    if(localStorage.getItem('courseHubtoken') == null){
+        navigate("/signin")
+    }
     const [first,setFirst] = useState(false);
     // console.log(params.id)
     // console.log(location.state.courseName)
