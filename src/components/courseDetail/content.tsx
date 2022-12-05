@@ -7,13 +7,14 @@ import {Document, Page} from "react-pdf";
 import axios from "axios";
 import { contentDetail } from '../interfaces/interface';
 import { Box, Container, CssBaseline, Typography } from '@mui/material';
+import { useState } from 'react';
 
 const theme = createTheme();
 
 export default function Content() {
     const params = useParams();
-    const [contentDetails, setContentDetails] = React.useState([])
-
+    const [contentDetails, setContentDetails] = useState([])
+    const [loading,setLoading] = useState("Loading...");
 
     React.useEffect(() => {
         const options = {
@@ -26,15 +27,23 @@ export default function Content() {
         };
         console.log("PARAMETER ID",params.id)
         axios(options).then((r) => {
-          // console.log(r.data);    
+          // console.log(r.data);
+          if(Object.hasOwn(r.data,"error_message")){
+            setLoading(r.data.error_message)
+          }
+          else{    
           setContentDetails([r.data])
+          setLoading("Loaded")
           console.log("Content Details")
           console.log(r.data)
+          }
         })
       }, []);
     // const [courseList, setCourseList] = useState([])
     // const arr = ['https://www.youtube.com/watch?v=BQwj6A99oVc','https://www.youtube.com/watch?v=O753uuutqH8&t=10s&ab_channel=CrashCourse','https://www.youtube.com/watch?v=M_GVUj86VaY&list=RDLVO753uuutqH8&index=2&ab_channel=KeepOnCoding']
     return (
+        <div>
+        {loading=="Loaded" ?
         contentDetails.map(({
             id,
             name,
@@ -63,6 +72,10 @@ export default function Content() {
                     </Box>
                 </Container>
             </ThemeProvider>
+        
         ))
+
+        : loading }
+        </div>
     );
 }
