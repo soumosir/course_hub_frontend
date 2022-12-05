@@ -11,6 +11,7 @@ import {Navigate} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
 import CourseCard from '../courseCard/courseCard';
+import jwt from 'jwt-decode'
 
 function Copyright(props: any) {
   return (
@@ -51,6 +52,7 @@ export default function Home(props: any) {
     // const [courseList, setCourseList] = useState([])
 
     const [enrolledCourseList, setEnrolledCourseList] = useState([])
+    const [username, setUsername] = useState("");
 
 
     React.useEffect(() => {
@@ -59,6 +61,10 @@ export default function Home(props: any) {
             // console.log("OBJECT")
             // console.log(r.data)
             // setCourseList(r.data)
+            const tok :string  = localStorage.getItem('courseHubtoken') || "";
+            const userMap : any = jwt(tok);
+            
+            setUsername(userMap["sub"]);
             setEnrolledCourseList(r.data)
             localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
         })
@@ -75,10 +81,11 @@ export default function Home(props: any) {
         {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
         />}
+      
       <Container component="main">
         <CssBaseline />
-        <Typography variant='h3' m={5} gutterBottom>
-                    Home
+        <Typography variant='h4' m={5} gutterBottom>
+            Welcome to course hub, {username}!
         </Typography>
       <CssBaseline />
         <Typography variant='h4' m={5} gutterBottom>
