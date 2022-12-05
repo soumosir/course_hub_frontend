@@ -13,6 +13,7 @@ import Content from "./components/courseDetail/content";
 import Exam from './components/exam/exam'
 import { Alert } from '@mui/material'
 import AlertComponent from './components/alert/alert'
+import Grades from './components/grades/grades'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -33,6 +34,7 @@ function App() {
         <Route path='/exam/:id' element={<Exam/> }/>
         {/* <Route path='/' element={ </> }/> */}
          <Route path='/signup' element={ <UserSignUp/> }/>
+         <Route path='/grades/:id' element={<Grades/>}/>
 
     </Routes>
     </div>

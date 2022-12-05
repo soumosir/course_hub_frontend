@@ -109,6 +109,13 @@ export default function CourseDetail() {
         first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     }
 
+    const handleGradesClick = function(event: React.MouseEvent<HTMLButtonElement>, id: number){
+        // Somewhere in your code, e.g. inside a handler:
+        // console.log(data.courseCode, data.courseInstructor)
+        console.log(id);
+        navigate("/grades/"+id); 
+    };
+
     // @ts-ignore
     // @ts-ignore
     // @ts-ignore
@@ -183,6 +190,10 @@ export default function CourseDetail() {
                     </Typography>
                     { first && <ExamCard data={courseList.exams} />}
                     {/* <ExamCard data={exams}/> */}
+                    <Typography variant='h4' m={5} gutterBottom>
+                        <Button id="grades" onClick={event => handleGradesClick(event, id)} size="small">Checkout Grades</Button>
+                    </Typography>
+                    
                 </Container>
             </ThemeProvider>
         ))
