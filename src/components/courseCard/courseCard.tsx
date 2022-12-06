@@ -81,11 +81,10 @@ export default function courseCard({data}: any): JSX.Element {
 
         appService.addToWishlist(request).then(r => {
             
-            // let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
             let addedCourse = courseList.filter((course: course) => {
                 return course.id == courseId;
             });
-            
+
             let newWishlist = [...wishlistCourses]
             newWishlist.push(addedCourse[0])
             setWishlistCourses(newWishlist)

@@ -16,6 +16,7 @@ import ContentCard from '../contentCard/contentCard';
 import ExamCard from '../examCard/examCard';
 import Grid from "@mui/material/Grid";
 import {Input} from "@mui/material";
+import jwt from 'jwt-decode'
 
 function Copyright(props: any) {
     return (
@@ -42,9 +43,21 @@ export default function CourseDetail() {
     const [content, setContent] = useState(null);
     const [exam, setExam] = useState(null);
 
+    
     if (localStorage.getItem('courseHubtoken') == null) {
         navigate("/signin")
     }
+
+    const [isInstructor, setInstructor] = React.useState(false);
+    React.useEffect(() => {
+        let token = localStorage.getItem('courseHubtoken')
+        if (token != null) {
+        const tok :string  = token || "";
+        const userMap : any = jwt(tok);
+        setInstructor(userMap["roles"].includes("ROLE_INSTRUCTOR"))
+        }
+    }, []);
+
     const [first, setFirst] = useState(false);
     console.log("COURSE DETAILS")
     // getCourseDetail(params.id)
@@ -219,9 +232,14 @@ export default function CourseDetail() {
                             <Typography sx={{fontSize: 20}} gutterBottom>
                                 {code} - {name}
                             </Typography>
+                            {isInstructor 
+                            ? 
+                            "" 
+                            :
                             <Typography sx={{mb: 1.5}} color="text.secondary">
                                 Instructor: {instructor}
                             </Typography>
+                            }
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
                                 Start Date: {startTime.split("T")[0]}
                             </Typography>
@@ -239,16 +257,22 @@ export default function CourseDetail() {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Button id={code} onClick={() => {
-                                enrollInCourse(id)
-                            }} size="small"
-                                    disabled={isUserEnrolled(code)}>{!isUserEnrolled(code) ?
-                                <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
+                            {
+                            isInstructor ? 
                             <Button id={code + 'edit'} onClick={() => {
                                 handleEditCourse(true)
                             }} size="small">
                                 Add Content/Exam
-                            </Button>
+                            </Button> 
+                            
+                            :
+                            <Button id={code} onClick={() => {
+                                enrollInCourse(id)
+                            }} size="small"
+                                    disabled={isUserEnrolled(code)}>{!isUserEnrolled(code) ?
+                            <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
+                            }
+                            
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
                             {/*{isWishlist ? */}
                             {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}
@@ -283,10 +307,15 @@ export default function CourseDetail() {
                         </Typography>
                         {first && <ExamCard data={exams}/>}
                         {/* <ExamCard data={exams}/> */}
+                        { isInstructor 
+                        ? 
+                        "" 
+                        :
                         <Typography variant='h4' m={5} gutterBottom>
                             <Button id="grades" onClick={event => handleGradesClick(event, id)} size="small">Checkout
                                 Grades</Button>
                         </Typography>
+                        }
                     </div>}
                 </Container>
             </ThemeProvider>

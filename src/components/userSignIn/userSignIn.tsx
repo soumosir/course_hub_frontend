@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import qs from 'qs';
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import Home from "../home/home";
 
@@ -49,7 +49,12 @@ export default function UserSignIn() {
   const [isSuccessfulLogin, setSuccessfulLogin] = useState<number>(-1)
   const [token,setToken] = useState<string>("");
   const [failedAttempt,setFailedAttempt] = useState<number>(0)
+  let navigate = useNavigate()
 
+  const navigateToHome = () => {
+    window.location.reload()
+    navigate("/")
+  }
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -126,10 +131,7 @@ export default function UserSignIn() {
             </Button>
             {isSuccessfulLogin == 0 && <div>Wrong credentials</div>}
             {failedAttempt >=3 && <div>User Blocked for 10 hours. Contact CEO - Soumosir Dutta</div>}
-            {isSuccessfulLogin == 1 && token != "" && <Navigate
-                to="/"
-                state = {token}
-            />}
+            {isSuccessfulLogin == 1 && token != "" && navigateToHome() }
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
