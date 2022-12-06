@@ -127,7 +127,7 @@ export default function UserSignIn() {
             {isSuccessfulLogin == 0 && <div>Wrong credentials</div>}
             {failedAttempt >=3 && <div>User Blocked for 10 hours. Contact CEO - Soumosir Dutta</div>}
             {isSuccessfulLogin == 1 && token != "" && <Navigate
-                to="/home"
+                to="/"
                 state = {token}
             />}
             <Grid container>
