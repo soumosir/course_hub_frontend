@@ -14,9 +14,11 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import { AppService } from "../appService/appService";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CourseCard from '../courseCard/courseCard';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -33,79 +35,26 @@ function Copyright(props: any) {
 
 
 const theme = createTheme();
-const response = [
-    {
-        courseCode: "ENPM613",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: true
-    },
-    {
-        courseCode: "ENPM614",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: true
-    },
-    {
-        courseCode: "ENPM615",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: true
-    },
-    {
-        courseCode: "ENPM616",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: true
-    },
-    {
-        courseCode: "ENPM617",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: true
-    },
-]
 
 export default function Wishlist() {
-  let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
-  console.log("WISHLIST")
-    if(localStorage.getItem('courseHubtoken') == null){
-        navigate("/signin")
-    }
-  console.log(wishlistCourses)
+
+  const [wishlistCourses, setWishlistCourseList] = React.useState([])
+  const appService = new AppService()
+  const navigate = useNavigate();
+  React.useEffect(() => {
+      appService.getWishlist().then(r => {
+          console.log(r.data)
+          setWishlistCourseList(r.data)
+      })
+    }, []);
+
+   
   let isWishlist = true
   return (
     <ThemeProvider theme={theme}>
+      {localStorage.getItem('courseHubtoken') == null && <Navigate
+            to="/signin"
+        />}
       <Container component="main">
       <CssBaseline />
         <Typography variant='h3' m={5} gutterBottom>

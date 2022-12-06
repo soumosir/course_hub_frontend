@@ -36,16 +36,6 @@ function getEnrolledCourses() {
     return axios(options)
 }
 
-function getWishlist() {
-    const options = {
-        method: 'GET',
-        headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:'https://localhost:8443/api/course/wishlist',
-    };
-    // console.log(options);
-    return axios(options)
-}
-
 const theme = createTheme();
 
 export default function Home(props: any) {
@@ -63,17 +53,13 @@ export default function Home(props: any) {
             // setCourseList(r.data)
             const tok :string  = localStorage.getItem('courseHubtoken') || "";
             const userMap : any = jwt(tok);
-            
+            console.log(userMap)
             setUsername(userMap["sub"]);
             setEnrolledCourseList(r.data)
             localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
         })
-        getWishlist().then(r => {
-            localStorage.setItem('wishlist',JSON.stringify(r.data));
-
-        })
     }, []);
-
+    
     let isHome = true
     let isWishlist = false
     return (

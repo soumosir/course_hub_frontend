@@ -33,68 +33,7 @@ function Copyright(props: any) {
 }
 
 const theme = createTheme();
-const response = [
-    {
-        courseCode: "ENPM613",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: false
-    },
-    {
-        courseCode: "ENPM614",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: false
-    },
-    {
-        courseCode: "ENPM615",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: false
-    },
-    {
-        courseCode: "ENPM616",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: false
-    },
-    {
-        courseCode: "ENPM617",
-        courseName: "Software Design And Implementation",
-        courseInstructor: "Kini",
-        courseStartDate: "12/01/22",
-        courseEndDate: "12/01/22",
-        totalSeats: 60,
-        remainingSeats: 60,
-        courseDescription: "This course teaches design patterns and principles in detail",
-        active: 1,
-        isWishlist: false
-    },
-]
+
 
 export default function Courses() {
 
@@ -108,13 +47,6 @@ export default function Courses() {
 
     React.useEffect(() => {
         appService.getCourses().then(r => {
-            console.log("OBJECT")
-            console.log(r.data)
-            let enrolledCourses = localStorage.getItem('enrolledCourses')
-            let wishlistCourses = localStorage.getItem('wishlist')
-            // let filteredCourses = r.data.filter((course: course) => {
-            //     return !enrolledCourses.indexOf(course.id) === -1;
-            // });
             setCourseList(r.data)
         })
       }, []);

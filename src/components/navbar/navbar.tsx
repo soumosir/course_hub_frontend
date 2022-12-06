@@ -31,7 +31,7 @@ function NavBar() {
 
   const handleCloseNavMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     // Somewhere in your code, e.g. inside a handler:
-    navigate(event.currentTarget.innerText.toLowerCase());
+    event.currentTarget.innerText.toLowerCase() == "home" ?  navigate("/") : navigate(event.currentTarget.innerText.toLowerCase())
     setAnchorElNav(null);
   };
 

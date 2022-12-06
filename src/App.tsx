@@ -27,8 +27,8 @@ function App() {
         <NavBar></NavBar>
         {/* <AlertComponent></AlertComponent> */}
     <Routes>
-        <Route path='/' element = { <HomePage />} />
-        <Route path='/home' element = { <Home />} />
+        {/* <Route path='/' element = { <HomePage />} /> */}
+        <Route path='/' element = { <Home />} />
         <Route path='/courses' element={ <Courses/> }/>
         <Route path='/wishlist' element={ <Wishlist/> }/>
         <Route path='/course/:id' element={<CourseDetail/> }/>

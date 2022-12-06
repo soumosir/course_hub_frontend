@@ -21,6 +21,7 @@ import { jsx } from '@emotion/react';
 import { useNavigate } from "react-router-dom";
 import { AppService } from "../appService/appService";
 import { Alert, Snackbar } from '@mui/material';
+import { useState } from 'react';
 
 function Copyright(props: any) {
   return (
@@ -44,14 +45,20 @@ export default function courseCard({data}: any): JSX.Element {
     let isHome = data[2]
     let initialData = data[0]
 
-    let [courseList, setCourseList] = React.useState([])
+    let [emptyList, setEmptyList] = useState(false)
+    const [loading,setLoading] = useState("Loading...");
+
+    let [courseList, setCourseList] = useState([])
     React.useEffect(() => {
         setCourseList(data[0])
       }, [initialData]);
 
       let [wishlistCourses, setWishlistCourses] = React.useState([])
-        React.useEffect(() => {
-        setWishlistCourses(JSON.parse(localStorage.getItem('wishlist') as string))
+      React.useEffect(() => {
+        appService.getWishlist().then(r => {
+            console.log(r.data)
+            setWishlistCourses(r.data)
+        })
       }, []);
     
 
@@ -74,15 +81,14 @@ export default function courseCard({data}: any): JSX.Element {
 
         appService.addToWishlist(request).then(r => {
             
-            let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
+            // let wishlistCourses = JSON.parse(localStorage.getItem('wishlist') as string)
             let addedCourse = courseList.filter((course: course) => {
                 return course.id == courseId;
             });
-
-            wishlistCourses.push(addedCourse[0])
-            localStorage.setItem('wishlist',JSON.stringify(wishlistCourses))
             
-            setWishlistCourses(wishlistCourses)
+            let newWishlist = [...wishlistCourses]
+            newWishlist.push(addedCourse[0])
+            setWishlistCourses(newWishlist)
 
           }).catch(error => {
             setUnsuccessfulWishlistAddition(true)
@@ -100,7 +106,6 @@ export default function courseCard({data}: any): JSX.Element {
                 return course.id != courseId;
             });
             setCourseList(filteredCourseList)
-            localStorage.setItem('wishlist',JSON.stringify(filteredCourseList))
 
         }).catch(error => {
             setUnsuccessfulWishlistDeletion(true)

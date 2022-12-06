@@ -16,6 +16,17 @@ export class AppService {
         return response
     }
 
+    public async getWishlist(): Promise<any> {
+        const options = {
+            method: 'GET',
+            headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
+            url:'https://localhost:8443/api/course/wishlist',
+        };
+
+        const response = axios(options)
+        return response
+    }
+
     public async addToWishlist(request: any): Promise<any> {
         const options = {
             method: 'PUT',
