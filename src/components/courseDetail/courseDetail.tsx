@@ -16,6 +16,11 @@ import ContentCard from '../contentCard/contentCard';
 import ExamCard from '../examCard/examCard';
 import Grid from "@mui/material/Grid";
 import {Input} from "@mui/material";
+import jwt from "jwt-decode";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Box from "@mui/material/Box";
 
 function Copyright(props: any) {
     return (
@@ -38,10 +43,10 @@ export default function CourseDetail() {
     const location = useLocation();
     let navigate = useNavigate();
     const [courseList, setCourseList] = useState([])
-    const [isEdit, setIsEdit] = useState(false);
-    const [content, setContent] = useState(null);
-    const [exam, setExam] = useState(null);
-
+    const [isContentAdding, setIsContentAdding] = useState(false);
+    const [isExamAdding, setIsExamAdding] = useState(false);
+    const [questions, setQuestions] = useState(null);
+    const [answers, setAnswers] = useState(null);
     if (localStorage.getItem('courseHubtoken') == null) {
         navigate("/signin")
     }
@@ -112,21 +117,28 @@ export default function CourseDetail() {
         });
     }
 
-    const handleContentChange = (e: { target: { files: Blob[]; }; }) => {
+    const handleQuestionChange = (e: { target: { files: Blob[]; }; }) => {
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
             console.log("Content", e.target.result);
-            setContent(e.target.result);
+            setQuestions(e.target.result);
         };
     }
-    const handleExamChange = (e: { target: { files: Blob[]; }; }) => {
+    const handleAnswersChange = (e: { target: { files: Blob[]; }; }) => {
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
             // console.log("Exam", e.target.result);
-            setExam(e.target.result);
+            setAnswers(e.target.result);
         };
+    }
+    const isOwner = () => {
+        const tok :string  = localStorage.getItem('courseHubtoken') || "";
+        const userMap : any = jwt(tok);
+        const currentCourse = courseList[0];
+        console.log(currentCourse,userMap);
+        return currentCourse['instructor'] == userMap.sub;
     }
 
     // function seeContent(id:any) {
@@ -135,31 +147,30 @@ export default function CourseDetail() {
     //     // @ts-ignore
     //     first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     // }
-    const addContentAndExam = (value: boolean, id: number) => {
+
+    const addContent = (event: React.FormEvent<HTMLFormElement>) => {
         const currentCourse = courseList[0];
-        const newContent = JSON.parse(content as unknown as string)
-        const newExam = JSON.parse(exam as unknown as string)
-        let isChanged = false;
-        console.log(currentCourse);
-        console.log(newContent);
-        console.log(newExam);
-        if (newContent != null) {
-            isChanged = true;
-            if (currentCourse.contents === null) {
-                currentCourse.contents = newContent;
-            } else {
-                currentCourse.contents.push(...newContent);
-            }
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const newContent = {
+            name:data.get('name'),
+            type:data.get('type'),
+            url:data.get('url')
+        };
+        if (currentCourse.contents === null) {
+            currentCourse.contents = newContent;
+        } else {
+            currentCourse.contents.push(newContent);
         }
-        if (newExam != null) {
-            isChanged = true;
-            if (currentCourse.exams === null) {
-                currentCourse.exams = newExam;
-            } else {
-                currentCourse.exams.push(...newExam)
-            }
-        }
-        console.log(currentCourse);
+        // if (newExam != null) {
+        //     isChanged = true;
+        //     if (currentCourse.exams === null) {
+        //         currentCourse.exams = newExam;
+        //     } else {
+        //         currentCourse.exams.push(...newExam)
+        //     }
+        // }
+        // console.log(currentCourse);
 
         // currentCourse.exams.addAll(newExam);
 
@@ -172,9 +183,52 @@ export default function CourseDetail() {
             data: currentCourse,
             url: 'https://localhost:8443/api/course',
         };
-        setIsEdit(value);
+        setIsContentAdding(false);
         axios(options).then((r) => {
             console.log("successfull edit")
+        })
+    }
+    const addExam = (event: React.FormEvent<HTMLFormElement>) => {
+        const currentCourse = courseList[0];
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const newContent = {
+            name:data.get('name'),
+            type:data.get('type'),
+            duration:data.get('exam_duration'),
+            questions:questions,
+            answers:answers
+        };
+        console.log(newContent);
+        if (currentCourse.exams === null) {
+            currentCourse.exams = newContent;
+        } else {
+            currentCourse.exams.push(newContent);
+        }
+        // if (newExam != null) {
+        //     isChanged = true;
+        //     if (currentCourse.exams === null) {
+        //         currentCourse.exams = newExam;
+        //     } else {
+        //         currentCourse.exams.push(...newExam)
+        //     }
+        // }
+        // console.log(currentCourse);
+
+        // currentCourse.exams.addAll(newExam);
+
+        const options = {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
+            },
+            data: currentCourse,
+            url: 'https://localhost:8443/api/course',
+        };
+        setIsExamAdding(false);
+        axios(options).then((r) => {
+            setCourseList([r.data])
         })
     }
 
@@ -184,8 +238,13 @@ export default function CourseDetail() {
         console.log(id);
         navigate("/grades/" + id);
     };
-    const handleEditCourse = (value: boolean) => {
-        setIsEdit(value);
+    const handleEditContent = (value: boolean) => {
+        setIsExamAdding(false);
+        setIsContentAdding(value);
+    }
+    const handleEditExam = (value: boolean) => {
+        setIsContentAdding(false);
+        setIsExamAdding(value);
     }
 
     // @ts-ignore
@@ -244,11 +303,16 @@ export default function CourseDetail() {
                             }} size="small"
                                     disabled={isUserEnrolled(code)}>{!isUserEnrolled(code) ?
                                 <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
-                            <Button id={code + 'edit'} onClick={() => {
-                                handleEditCourse(true)
+                            {isOwner() && <Button id={code + 'edit'} onClick={() => {
+                                handleEditContent(true)
                             }} size="small">
-                                Add Content/Exam
-                            </Button>
+                                Add Content
+                            </Button>}
+                            {isOwner() && <Button id={code + 'edit'} onClick={() => {
+                                handleEditExam(true)
+                            }} size="small">
+                                Add Exam
+                            </Button>}
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
                             {/*{isWishlist ? */}
                             {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}
@@ -259,21 +323,100 @@ export default function CourseDetail() {
 
                         </CardActions>
                     </Card>
-                    {isEdit && <Grid>
-                        <Grid item xs={12}>
-                            Content - <Input aria-label="Content" key="content" type="file"
-                                             onChange={handleContentChange}/>
+                    {isContentAdding &&
+                    <Box component="form" noValidate onSubmit={addContent} sx={{ mt: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="given-name"
+                                    name="name"
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="type"
+                                    label="Type"
+                                    name="type"
+                                    autoComplete="family-name"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="url"
+                                    label="URL"
+                                    name="url"
+                                    autoComplete="url"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            Exam -<Input aria-label="Exams" key="exam" type="file" onChange={handleExamChange}/>
-                        </Grid>
-                        <Button id={code + 'edit'} onClick={() => {
-                            addContentAndExam(false, id)
-                        }} size="small">
-                            Submit
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Add Content
                         </Button>
-                    </Grid>}
-                    {!isEdit && <div>
+                    </Box>}
+                    {isExamAdding && <Box component="form" noValidate onSubmit={addExam} sx={{ mt: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="exam-name"
+                                    name="name"
+                                    required
+                                    fullWidth
+                                    id="exam_name"
+                                    label="Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="exam_type"
+                                    label="exam_type"
+                                    name="type"
+                                    autoComplete="exam-type"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="exam_duration"
+                                    label="Duration"
+                                    name="exam_duration"
+                                    autoComplete="duration"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                Questions - <Input aria-label="Content" key="content" type = "file" onChange={handleQuestionChange}/>
+                            </Grid>
+                            <Grid item xs={12}>
+                                Answers -<Input aria-label="Exams" key="exam" type = "file" onChange={handleAnswersChange}/>
+                            </Grid>
+                        </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Add Exam
+                        </Button>
+                    </Box>}
+                    {!isContentAdding && !isExamAdding && <div>
                         <Typography variant='h4' m={5} gutterBottom>
                             Contents
                         </Typography>
