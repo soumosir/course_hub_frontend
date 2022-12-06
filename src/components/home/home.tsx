@@ -78,7 +78,7 @@ export default function Home(props: any) {
     let isHome = true
     let isWishlist = false
 
-    const navigateToAddCourse = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
+    const navigateToAddCourse = function(event: React.MouseEvent<HTMLButtonElement>){
       navigate("/course/add")    
     };
 
