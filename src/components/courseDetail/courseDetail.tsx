@@ -314,21 +314,31 @@ export default function CourseDetail() {
                             </Typography>
                         </CardContent>
                         <CardActions>
+                            {isInstructor 
+                            ?
+                            <Box>
+                            {
+                                isOwner() && <Button id={code + 'edit'} onClick={() => {
+                                    handleEditContent(true);
+                                } } size="small">
+                                    Add Content
+                                </Button>}
+                                {
+                                isOwner() && <Button id={code + 'edit'} onClick={() => {
+                                    handleEditExam(true);
+                                } } size="small">
+                                    Add Exam
+                                </Button>
+                            }
+                            </Box>
+                            :
                             <Button id={code} onClick={() => {
-                                enrollInCourse(id)
-                            }} size="small"
+                                    enrollInCourse(id);
+                                } } size="small"
                                     disabled={isUserEnrolled(code)}>{!isUserEnrolled(code) ?
-                                <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
-                            {isOwner() && <Button id={code + 'edit'} onClick={() => {
-                                handleEditContent(true)
-                            }} size="small">
-                                Add Content
-                            </Button>}
-                            {isOwner() && <Button id={code + 'edit'} onClick={() => {
-                                handleEditExam(true)
-                            }} size="small">
-                                Add Exam
-                            </Button>}
+                                        <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
+                            }
+                            
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
                             {/*{isWishlist ? */}
                             {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}
@@ -340,7 +350,7 @@ export default function CourseDetail() {
                         </CardActions>
                     </Card>
                     {isContentAdding &&
-                    <Box component="form" noValidate onSubmit={addContent} sx={{ mt: 3 }}>
+                    <Box m = {5} component="form" noValidate onSubmit={addContent} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -383,7 +393,7 @@ export default function CourseDetail() {
                             Add Content
                         </Button>
                     </Box>}
-                    {isExamAdding && <Box component="form" noValidate onSubmit={addExam} sx={{ mt: 3 }}>
+                    {isExamAdding && <Box m = {5} component="form" noValidate onSubmit={addExam} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField

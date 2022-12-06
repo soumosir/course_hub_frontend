@@ -7,12 +7,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
 import CourseCard from '../courseCard/courseCard';
 import jwt from 'jwt-decode'
 import { AppService } from '../appService/appService';
+import { Button, Stack } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -37,6 +38,7 @@ function getEnrolledCourses() {
     return axios(options)
 }
 
+
 const theme = createTheme();
 
 export default function Home(props: any) {
@@ -46,6 +48,8 @@ export default function Home(props: any) {
     const [username, setUsername] = useState("");
     const [isInstructor, setInstructor] = useState(false)
     const appService = new AppService()
+    const navigate = useNavigate();
+    
 
     React.useEffect(() => {
       console.log("HOME LOCAL STORAGE")
@@ -73,6 +77,11 @@ export default function Home(props: any) {
     
     let isHome = true
     let isWishlist = false
+
+    const navigateToAddCourse = function(event: React.MouseEvent<HTMLButtonElement>, courseId: number){
+      navigate("/course/add")    
+    };
+
     return (
     <ThemeProvider theme={theme}>
         {localStorage.getItem('courseHubtoken') == null && <Navigate
@@ -84,9 +93,19 @@ export default function Home(props: any) {
             Welcome to course hub, {username}!
         </Typography>
       <CssBaseline />
-        <Typography variant='h4' m={5} gutterBottom>
+
+      <Stack
+        m = {5}
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        spacing={2}>
+        <Typography variant='h4' gutterBottom>
             {isInstructor ? "My Courses" : "Enrolled Courses"}
         </Typography>
+        <Button variant="contained" onClick={event => navigateToAddCourse(event)}>Add Course</Button>
+      </Stack>
+
         <CourseCard data={[enrolledCourseList, isWishlist, isHome]} />
       </Container>
     </ThemeProvider>
