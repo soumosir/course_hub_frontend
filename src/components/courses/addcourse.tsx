@@ -70,7 +70,7 @@ export default function AddCourse() {
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
-            console.log("Exam", e.target.result);
+            // console.log("Exam", e.target.result);
             setExam(e.target.result);
         };
     }
