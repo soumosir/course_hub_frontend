@@ -50,6 +50,17 @@ export default function CourseDetail() {
     if (localStorage.getItem('courseHubtoken') == null) {
         navigate("/signin")
     }
+
+    const [isInstructor, setInstructor] = React.useState(false);
+    React.useEffect(() => {
+        let token = localStorage.getItem('courseHubtoken')
+        if (token != null) {
+        const tok :string  = token || "";
+        const userMap : any = jwt(tok);
+        setInstructor(userMap["roles"].includes("ROLE_INSTRUCTOR"))
+        }
+    }, []);
+
     const [first, setFirst] = useState(false);
     console.log("COURSE DETAILS")
     // getCourseDetail(params.id)
@@ -278,9 +289,14 @@ export default function CourseDetail() {
                             <Typography sx={{fontSize: 20}} gutterBottom>
                                 {code} - {name}
                             </Typography>
+                            {isInstructor
+                            ?
+                            ""
+                            :
                             <Typography sx={{mb: 1.5}} color="text.secondary">
                                 Instructor: {instructor}
                             </Typography>
+                            }
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
                                 Start Date: {startTime.split("T")[0]}
                             </Typography>
@@ -426,10 +442,15 @@ export default function CourseDetail() {
                         </Typography>
                         {first && <ExamCard data={exams}/>}
                         {/* <ExamCard data={exams}/> */}
+                        { isInstructor
+                        ?
+                        ""
+                        :
                         <Typography variant='h4' m={5} gutterBottom>
                             <Button id="grades" onClick={event => handleGradesClick(event, id)} size="small">Checkout
                                 Grades</Button>
                         </Typography>
+                        }
                     </div>}
                 </Container>
             </ThemeProvider>

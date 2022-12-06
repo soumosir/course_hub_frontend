@@ -12,6 +12,7 @@ import axios from "axios";
 import {useState} from "react";
 import CourseCard from '../courseCard/courseCard';
 import jwt from 'jwt-decode'
+import { AppService } from '../appService/appService';
 
 function Copyright(props: any) {
   return (
@@ -43,21 +44,31 @@ export default function Home(props: any) {
 
     const [enrolledCourseList, setEnrolledCourseList] = useState([])
     const [username, setUsername] = useState("");
-
+    const [isInstructor, setInstructor] = useState(false)
+    const appService = new AppService()
 
     React.useEffect(() => {
-        localStorage.getItem('courseHubtoken') != null &&
+      console.log("HOME LOCAL STORAGE")
+      let token = localStorage.getItem('courseHubtoken')
+      if (token != null) {
+        const tok :string  = token || "";
+        const userMap : any = jwt(tok);
+        let isInstuctorTrue = userMap["roles"].includes("ROLE_INSTRUCTOR")
+        setInstructor(isInstuctorTrue)
+        setUsername(userMap["sub"]);
+        console.log(isInstuctorTrue, userMap)
+        isInstuctorTrue ?
+        appService.getMyCreatedCourses().then(r => {
+          setEnrolledCourseList(r.data)
+          console.log(enrolledCourseList)
+          localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
+      })
+        :
         getEnrolledCourses().then(r => {
-            // console.log("OBJECT")
-            // console.log(r.data)
-            // setCourseList(r.data)
-            const tok :string  = localStorage.getItem('courseHubtoken') || "";
-            const userMap : any = jwt(tok);
-            console.log(userMap)
-            setUsername(userMap["sub"]);
-            setEnrolledCourseList(r.data)
-            localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
-        })
+          setEnrolledCourseList(r.data)
+          localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
+      })
+      }
     }, []);
     
     let isHome = true
@@ -74,7 +85,7 @@ export default function Home(props: any) {
         </Typography>
       <CssBaseline />
         <Typography variant='h4' m={5} gutterBottom>
-            Enrolled Courses
+            {isInstructor ? "My Courses" : "Enrolled Courses"}
         </Typography>
         <CourseCard data={[enrolledCourseList, isWishlist, isHome]} />
       </Container>
