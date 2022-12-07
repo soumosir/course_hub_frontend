@@ -41,7 +41,7 @@ function register(request: any) {
             Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
         },
         data: request,
-        url: 'https://coursehubbackend.herokuapp.com/api/course',
+        url: 'https://localhost:8443/api/course',
     };
     return axios(options);
 }

@@ -8,7 +8,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://coursehubbackend.herokuapp.com/api/course',
+            url:'https://localhost:8443/api/course',
         };
 
         const response = axios(options)
@@ -20,7 +20,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://coursehubbackend.herokuapp.com/api/course/wishlist',
+            url:'https://localhost:8443/api/course/wishlist',
         };
 
         const response = axios(options)
@@ -31,7 +31,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://coursehubbackend.herokuapp.com/api/createdcourses',
+            url:'https://localhost:8443/api/createdcourses',
         };
         const response = axios(options)
         return response
@@ -44,7 +44,7 @@ export class AppService {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://coursehubbackend.herokuapp.com/api/course/addwishlist',
+            url:'https://localhost:8443/api/course/addwishlist',
         };
 
         const response = axios(options)
@@ -57,7 +57,7 @@ export class AppService {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://coursehubbackend.herokuapp.com/api/course/removewishlist',
+            url:'https://localhost:8443/api/course/removewishlist',
         };
 
         const response = axios(options)

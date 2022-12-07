@@ -32,7 +32,7 @@ function getExam(id:any) {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:`https://coursehubbackend.herokuapp.com/api/exam/${id}`,
+        url:`https://localhost:8443/api/exam/${id}`,
     };
     // console.log(options);
     return axios(options)
@@ -43,7 +43,7 @@ const postToExam = (exam:any) => {
         method: 'POST',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
         data : exam,
-        url:'https://coursehubbackend.herokuapp.comapi/exam/submit',
+        url:'https://localhost:8443api/exam/submit',
     };
     // console.log(options);
     return axios(options)
@@ -172,8 +172,8 @@ export default function Exam(props: any) {
         ))}
 
           {
-            isInstructor 
-            ? 
+            isInstructor
+            ?
             <Stack
               direction="row"
               justifyContent="flex-start"
@@ -186,7 +186,7 @@ export default function Exam(props: any) {
                         Instructors can't submit the exam.
                 </Typography>
            </Stack>
-        
+
             :
             <Button variant="contained" type="submit" disabled={score!="-1"} >Submit</Button>
           }

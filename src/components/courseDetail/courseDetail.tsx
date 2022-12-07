@@ -83,7 +83,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: `https://coursehubbackend.herokuapp.com/api/course/` + params.id,
+            url: `https://localhost:8443/api/course/` + params.id,
         };
         console.log("PARAMETER ID", params.id)
         axios(options).then((r) => {
@@ -107,7 +107,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: 'https://coursehubbackend.herokuapp.com/api/course/enrolled',
+            url: 'https://localhost:8443/api/course/enrolled',
         };
         // console.log(options);
         return axios(options)
@@ -139,7 +139,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: {courseId: id},
-            url: 'https://coursehubbackend.herokuapp.com/api/course/enrolluser',
+            url: 'https://localhost:8443/api/course/enrolluser',
         };
         // console.log(options);
         axios(options).then((data) => {
@@ -219,7 +219,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: currentCourse,
-            url: 'https://coursehubbackend.herokuapp.com/api/course',
+            url: 'https://localhost:8443/api/course',
         };
         setIsContentAdding(false);
         axios(options).then((r) => {
@@ -263,7 +263,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: currentCourse,
-            url: 'https://coursehubbackend.herokuapp.com/api/course',
+            url: 'https://localhost:8443/api/course',
         };
         setIsExamAdding(false);
         axios(options).then((r) => {
@@ -343,7 +343,7 @@ export default function CourseDetail() {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            {isInstructor 
+                            {isInstructor
                             ?
                             <Box>
                             {
@@ -368,7 +368,7 @@ export default function CourseDetail() {
                                     unenrollFromCourse(id);
                                 } } size="small">
                                    Unenroll from Course</Button>
-                            
+
                                 :
                                 <Button id={code} onClick={() => {
                                     enrollInCourse(id);
@@ -377,7 +377,7 @@ export default function CourseDetail() {
                             }
                             </Box>
                             }
-                            
+
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
                             {/*{isWishlist ? */}
                             {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}

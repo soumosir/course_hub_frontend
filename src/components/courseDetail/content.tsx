@@ -25,7 +25,7 @@ export default function Content() {
               'content-type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
           },
-          url: `https://coursehubbackend.herokuapp.com/api/content/`+params.id,
+          url: `https://localhost:8443/api/content/`+params.id,
         };
         console.log("PARAMETER ID",params.id)
         axios(options).then((r) => {

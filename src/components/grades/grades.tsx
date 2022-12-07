@@ -28,7 +28,7 @@ function getResult(id:any) {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:`https://coursehubbackend.herokuapp.com/api/courseresult/${id}`,
+        url:`https://localhost:8443/api/courseresult/${id}`,
     };
 
     console.log(options);
