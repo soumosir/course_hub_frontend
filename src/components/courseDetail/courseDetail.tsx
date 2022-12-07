@@ -21,6 +21,7 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
+import { AppService } from '../appService/appService';
 
 function Copyright(props: any) {
     return (
@@ -47,9 +48,11 @@ export default function CourseDetail() {
     const [isExamAdding, setIsExamAdding] = useState(false);
     const [questions, setQuestions] = useState(null);
     const [answers, setAnswers] = useState(null);
+    const [enrolledCourseList, setEnrolledCourseList] = useState([])
     if (localStorage.getItem('courseHubtoken') == null) {
         navigate("/signin")
     }
+    const appService = new AppService()
 
     const [isInstructor, setInstructor] = React.useState(false);
     React.useEffect(() => {
@@ -65,9 +68,9 @@ export default function CourseDetail() {
     console.log("COURSE DETAILS")
     // getCourseDetail(params.id)
     // getCourseDetail(11);
+
     function isUserEnrolled(courseCode: string | null | undefined) {
-        const enrolledCourses = JSON.parse(localStorage.getItem('enrolledCourses') as string);
-        let filteredData = enrolledCourses.filter((course: { code: string | null; }) => {
+        let filteredData = enrolledCourseList.filter((course: { code: string | null; }) => {
             return course.code === courseCode;
         });
         return filteredData.length > 0;
@@ -91,6 +94,10 @@ export default function CourseDetail() {
             setFirst(true);
             // console.log(courseList)
         })
+
+        getEnrolledCourses().then(r => {
+            setEnrolledCourseList(r.data)
+        })
     }, []);
 
     function getEnrolledCourses() {
@@ -104,6 +111,24 @@ export default function CourseDetail() {
         };
         // console.log(options);
         return axios(options)
+    }
+
+    function unenrollFromCourse(courseId: any){
+        const request = {
+            "courseId": courseId
+        }
+
+        appService.unenrollCourse(request).then(r => {
+            getEnrolledCourses().then(r => {
+                setEnrolledCourseList(r.data)
+                // localStorage.setItem('enrolledCourses', JSON.stringify(r.data));
+                window.location.reload();
+            })
+
+        }).catch(error => {
+            console.log("Error Unerolling User", error)
+            // setUnsuccessfulWishlistDeletion(true)
+        });
     }
 
     function enrollInCourse(id: any) {
@@ -120,7 +145,9 @@ export default function CourseDetail() {
         axios(options).then((data) => {
             console.log(data)
             getEnrolledCourses().then(r => {
-                localStorage.setItem('enrolledCourses', JSON.stringify(r.data));
+                setEnrolledCourseList(r.data)
+                window.location.reload();
+                // localStorage.setItem('enrolledCourses', JSON.stringify(r.data));
                 // window.location.reload();
             })
         }).catch((err) => {
@@ -299,12 +326,12 @@ export default function CourseDetail() {
                                 Instructor: {instructor}
                             </Typography>
                             }
-                            <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
+                            {/* <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
                                 Start Date: {startTime.split("T")[0]}
                             </Typography>
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
                                 End Date: {endTime.split("T")[0]}
-                            </Typography>
+                            </Typography> */}
                             <Typography sx={{fontSize: 14, mb: 0}} color="text.secondary">
                                 Total Seats: {totalSeats}
                             </Typography>
@@ -334,11 +361,21 @@ export default function CourseDetail() {
                             }
                             </Box>
                             :
-                            <Button id={code} onClick={() => {
+                            <Box>
+                            {
+                                isUserEnrolled(code) ?
+                                <Button id={code} onClick={() => {
+                                    unenrollFromCourse(id);
+                                } } size="small">
+                                   Unenroll from Course</Button>
+                            
+                                :
+                                <Button id={code} onClick={() => {
                                     enrollInCourse(id);
-                                } } size="small"
-                                    disabled={isUserEnrolled(code)}>{!isUserEnrolled(code) ?
-                                        <div>Enroll in Course</div> : <div>Already Enrolled in Course</div>}</Button>
+                                } } size="small">
+                                    Enroll in Course</Button>
+                            }
+                            </Box>
                             }
                             
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}

@@ -144,12 +144,12 @@ export default function courseCard({data}: any): JSX.Element {
                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                 Instructor: {instructor}
                             </Typography>
-                            <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
+                            {/* <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 Start Date: {startTime.split("T")[0]}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 End Date: {endTime.split("T")[0]}
-                            </Typography>
+                            </Typography> */}
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 Total Seats: {totalSeats}
                             </Typography>

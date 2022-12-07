@@ -56,8 +56,8 @@ function NavBar() {
   const handleCloseUserMenu = (setting:string) => {
       if(setting === "Logout"){
           localStorage.clear();
-          window.location.reload()
           navigate("/signin");
+          window.location.reload()
       }
     setAnchorElUser(null);
   };

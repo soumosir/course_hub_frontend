@@ -70,4 +70,17 @@ export class AppService {
         return response.data;
     }
 
+    public async unenrollCourse(request: any): Promise<any> {
+        const options = {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
+            data: request,
+            url:'https://localhost:8443/api/course/unenrolluser',
+        };
+
+        const response = axios(options)
+        console.log(response)
+        return response
+    }
+
 }

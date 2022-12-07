@@ -64,12 +64,13 @@ export default function Home(props: any) {
         isInstuctorTrue ?
         appService.getMyCreatedCourses().then(r => {
           setEnrolledCourseList(r.data)
-          console.log(enrolledCourseList)
+          console.log("Created Courses", r.data)
           localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
       })
         :
         getEnrolledCourses().then(r => {
           setEnrolledCourseList(r.data)
+          console.log("Enrolled Courses", r.data)
           localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
       })
       }
