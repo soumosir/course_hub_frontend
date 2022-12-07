@@ -23,12 +23,13 @@ import { AppService } from "../appService/appService";
 import { Alert } from '@mui/material';
 import axios from 'axios';
 import CorrectAnswerMap from './correctAnswerMap';
+import { hostUrl } from '../../App';
 
 function getResult(id:any) {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:`https://localhost:8443/api/courseresult/${id}`,
+        url: hostUrl + `/api/courseresult/${id}`,
     };
 
     console.log(options);

@@ -14,6 +14,7 @@ import CourseCard from '../courseCard/courseCard';
 import jwt from 'jwt-decode'
 import { AppService } from '../appService/appService';
 import { Button, Stack } from '@mui/material';
+import { hostUrl } from '../../App';
 
 function Copyright(props: any) {
   return (
@@ -32,7 +33,7 @@ function getEnrolledCourses() {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:'https://localhost:8443/api/course/enrolled',
+        url: hostUrl + '/api/course/enrolled',
     };
     // console.log(options);
     return axios(options)

@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import qs from "qs";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import { hostUrl } from '../../App';
 
 function Copyright(props: any) {
   return (
@@ -34,7 +35,7 @@ function register(request: any){
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     data: request,
-    url:'https://localhost:8443/api/user/register',
+    url: hostUrl + '/api/user/register',
   };
   return axios(options);
 }
