@@ -32,7 +32,7 @@ export default function ContentCard({data}: any): JSX.Element {
     let [contentList, setContentList] = React.useState([])
     React.useEffect(() => {
         setContentList(data)
-      }, []);
+      }, [data]);
 
       const handleContentClick = function(event: React.MouseEvent<HTMLButtonElement>, contentId: number){
         // Somewhere in your code, e.g. inside a handler:

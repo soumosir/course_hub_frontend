@@ -10,9 +10,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Navigate, useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {useState} from "react";
+import jwt from "jwt-decode";
 
 import {useLocation} from 'react-router-dom';
-import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
 
 function Copyright(props: any) {
   return (
@@ -62,6 +63,16 @@ export default function Exam(props: any) {
     const [loading,setLoading] = useState("Loading...");
     const [score,setScore] = useState("-1");
     let examId = params.id;
+
+    const [isInstructor, setInstructor] = React.useState(false);
+    React.useEffect(() => {
+        let token = localStorage.getItem('courseHubtoken')
+        if (token != null) {
+        const tok :string  = token || "";
+        const userMap : any = jwt(tok);
+        setInstructor(userMap["roles"].includes("ROLE_INSTRUCTOR"))
+        }
+    }, []);
 
     if(localStorage.getItem('courseHubtoken') == null){
         navigate("/signin")
@@ -141,9 +152,9 @@ export default function Exam(props: any) {
                     Exam
         </Typography>
         { loading=="Loaded"?
-        <Box component="form" noValidate onSubmit={submitExam} sx={{ mt: 3 }}>
+        <Box component="form" noValidate onSubmit={submitExam} sx={{ m: 5 }}>
         {Object.entries(questions).map((question)=>(
-          <div>
+          <Box m={5}>
           <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">{question[0]}</FormLabel>
             <RadioGroup
@@ -157,12 +168,28 @@ export default function Exam(props: any) {
                 <FormControlLabel value={question[1][3]} control={<Radio />} label={question[1][3]} />
             </RadioGroup>
           </FormControl>
-          </div>
+          </Box>
         ))}
 
-
-          <Button variant="contained" type="submit" disabled={score!="-1"} >Submit</Button>
-
+          {
+            isInstructor 
+            ? 
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              spacing={2}
+              m = {5}
+            >
+              <Button variant="contained" disabled={true} >Submit</Button>
+                <Typography variant='h6' m={5} gutterBottom>
+                        Instructors can't submit the exam.
+                </Typography>
+           </Stack>
+        
+            :
+            <Button variant="contained" type="submit" disabled={score!="-1"} >Submit</Button>
+          }
         </Box>
 
 

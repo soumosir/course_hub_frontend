@@ -54,13 +54,14 @@ export default function courseCard({data}: any): JSX.Element {
       }, [initialData]);
 
       let [wishlistCourses, setWishlistCourses] = React.useState([])
-      React.useEffect(() => {
-        appService.getWishlist().then(r => {
-            console.log(r.data)
-            setWishlistCourses(r.data)
-        })
-      }, []);
-    
+      if (!isHome) {
+        React.useEffect(() => {
+            appService.getWishlist().then(r => {
+                console.log(r.data)
+                setWishlistCourses(r.data)
+            })
+          }, []);
+      }
 
     const [isUnuccessfulWishlistAddition, setUnsuccessfulWishlistAddition] = React.useState<boolean>(false)
     const [isUnuccessfulWishlistDeletion, setUnsuccessfulWishlistDeletion] = React.useState<boolean>(false)
@@ -143,12 +144,12 @@ export default function courseCard({data}: any): JSX.Element {
                             <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                 Instructor: {instructor}
                             </Typography>
-                            <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
+                            {/* <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 Start Date: {startTime.split("T")[0]}
                             </Typography>
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 End Date: {endTime.split("T")[0]}
-                            </Typography>
+                            </Typography> */}
                             <Typography sx={{ fontSize: 14, mb: 0 }} color="text.secondary">
                                 Total Seats: {totalSeats}
                             </Typography>
