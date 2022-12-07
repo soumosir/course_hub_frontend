@@ -54,13 +54,14 @@ export default function courseCard({data}: any): JSX.Element {
       }, [initialData]);
 
       let [wishlistCourses, setWishlistCourses] = React.useState([])
-      React.useEffect(() => {
-        appService.getWishlist().then(r => {
-            console.log(r.data)
-            setWishlistCourses(r.data)
-        })
-      }, []);
-    
+      if (!isHome) {
+        React.useEffect(() => {
+            appService.getWishlist().then(r => {
+                console.log(r.data)
+                setWishlistCourses(r.data)
+            })
+          }, []);
+      }
 
     const [isUnuccessfulWishlistAddition, setUnsuccessfulWishlistAddition] = React.useState<boolean>(false)
     const [isUnuccessfulWishlistDeletion, setUnsuccessfulWishlistDeletion] = React.useState<boolean>(false)

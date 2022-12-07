@@ -64,7 +64,7 @@ export default function Content() {
                         {description}
                     </Typography>
                     <Box m={5} sx={{ justifyContent: 'center' }}>
-                        { type == "video" ?
+                        { type.toLowerCase() == "video" ?
                         <ReactPlayer width="100%" height={600} url ={url}/>
                         :
                         <object data={url} type="application/pdf" width="100%" height="600">

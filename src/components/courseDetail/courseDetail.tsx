@@ -121,7 +121,7 @@ export default function CourseDetail() {
             console.log(data)
             getEnrolledCourses().then(r => {
                 localStorage.setItem('enrolledCourses', JSON.stringify(r.data));
-                window.location.reload();
+                // window.location.reload();
             })
         }).catch((err) => {
             console.log(err);
@@ -196,6 +196,7 @@ export default function CourseDetail() {
         };
         setIsContentAdding(false);
         axios(options).then((r) => {
+            setCourseList([r.data])
             console.log("successfull edit")
         })
     }
@@ -239,6 +240,7 @@ export default function CourseDetail() {
         };
         setIsExamAdding(false);
         axios(options).then((r) => {
+            console.log("ADD CONTENT",r.data)
             setCourseList([r.data])
         })
     }

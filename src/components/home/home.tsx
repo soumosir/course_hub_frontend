@@ -103,7 +103,12 @@ export default function Home(props: any) {
         <Typography variant='h4' gutterBottom>
             {isInstructor ? "My Courses" : "Enrolled Courses"}
         </Typography>
+        {isInstructor 
+        ?
         <Button variant="contained" onClick={event => navigateToAddCourse(event)}>Add Course</Button>
+        :
+        ""
+        }
       </Stack>
 
         <CourseCard data={[enrolledCourseList, isWishlist, isHome]} />
