@@ -78,10 +78,10 @@ export default function Content() {
 
         ))
 
-        : 
+        :
         <ThemeProvider theme={theme}>
             <Container component="main">
-            <CssBaseline/> 
+            <CssBaseline/>
                 <Typography m={5} sx={{ fontSize: 18 }} color="text.secondary">
                         {loading}
                 </Typography>

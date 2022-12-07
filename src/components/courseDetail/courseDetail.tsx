@@ -344,7 +344,7 @@ export default function CourseDetail() {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            {isInstructor 
+                            {isInstructor
                             ?
                             <Box>
                             {
@@ -369,7 +369,7 @@ export default function CourseDetail() {
                                     unenrollFromCourse(id);
                                 } } size="small">
                                    Unenroll from Course</Button>
-                            
+
                                 :
                                 <Button id={code} onClick={() => {
                                     enrollInCourse(id);
@@ -378,7 +378,7 @@ export default function CourseDetail() {
                             }
                             </Box>
                             }
-                            
+
                             {/*<Button id={courseCode} onClick={handleCourseClick} size="small">Go to the course </Button>*/}
                             {/*{isWishlist ? */}
                             {/*    <Button id={courseCode} onClick={event => handleWishlistClick(event, isWishlist)} size="small">Remove from Wishlist</Button>*/}

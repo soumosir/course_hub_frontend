@@ -50,7 +50,7 @@ export default function Home(props: any) {
     const [isInstructor, setInstructor] = useState(false)
     const appService = new AppService()
     const navigate = useNavigate();
-    
+
 
     React.useEffect(() => {
       console.log("HOME LOCAL STORAGE")
@@ -76,12 +76,12 @@ export default function Home(props: any) {
       })
       }
     }, []);
-    
+
     let isHome = true
     let isWishlist = false
 
     const navigateToAddCourse = function(event: React.MouseEvent<HTMLButtonElement>){
-      navigate("/course/add")    
+      navigate("/course/add")
     };
 
     return (
@@ -105,7 +105,7 @@ export default function Home(props: any) {
         <Typography variant='h4' gutterBottom>
             {isInstructor ? "My Courses" : "Enrolled Courses"}
         </Typography>
-        {isInstructor 
+        {isInstructor
         ?
         <Button variant="contained" onClick={event => navigateToAddCourse(event)}>Add Course</Button>
         :

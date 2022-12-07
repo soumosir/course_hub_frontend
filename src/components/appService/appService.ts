@@ -38,7 +38,7 @@ export class AppService {
         return response
     }
 
-    
+
 
     public async addToWishlist(request: any): Promise<any> {
         const options = {

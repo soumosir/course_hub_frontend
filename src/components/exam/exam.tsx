@@ -173,8 +173,8 @@ export default function Exam(props: any) {
         ))}
 
           {
-            isInstructor 
-            ? 
+            isInstructor
+            ?
             <Stack
               direction="row"
               justifyContent="flex-start"
@@ -187,7 +187,7 @@ export default function Exam(props: any) {
                         Instructors can't submit the exam.
                 </Typography>
            </Stack>
-        
+
             :
             <Button variant="contained" type="submit" disabled={score!="-1"} >Submit</Button>
           }
