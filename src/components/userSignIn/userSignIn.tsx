@@ -109,7 +109,7 @@ export default function UserSignIn() {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Username"
               name="email"
               autoComplete="email"
               autoFocus
@@ -138,14 +138,14 @@ export default function UserSignIn() {
               Sign In
             </Button>
             {isSuccessfulLogin == 0 && <div>Wrong credentials</div>}
-            {failedAttempt >=3 && <div>User Blocked for 10 hours. Contact CEO - Soumosir Dutta</div>}
+            {failedAttempt >=50 && <div>User Blocked for 10 hours. Contact CEO - Soumosir Dutta</div>}
             {isSuccessfulLogin == 1 && token != "" && navigateToHome() }
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
+              {/* <Grid item xs> */}
+                {/* <Link href="#" variant="body2">
                   Forgot password?
-                </Link>
-              </Grid>
+                </Link> */}
+              {/* </Grid> */}
               <Grid item>
                 <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
@@ -154,7 +154,6 @@ export default function UserSignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );

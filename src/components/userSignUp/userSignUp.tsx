@@ -16,6 +16,7 @@ import qs from "qs";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import { hostUrl } from '../../App';
+import Loader from '../loader/loader';
 
 function Copyright(props: any) {
   return (
@@ -44,6 +45,7 @@ const theme = createTheme();
 
 export default function UserSignUp() {
   let navigate = useNavigate();
+  const [loader, setLoader] = React.useState(false);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -65,6 +67,7 @@ export default function UserSignUp() {
 
   return (
     <ThemeProvider theme={theme}>
+      {loader && <Loader></Loader>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -159,7 +162,7 @@ export default function UserSignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
     </ThemeProvider>
   );
