@@ -19,6 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {Input} from "@mui/material";
 import {delay} from "@reduxjs/toolkit/dist/utils";
+import { hostUrl } from '../../App';
 
 function Copyright(props: any) {
     return (
@@ -41,7 +42,7 @@ function register(request: any) {
             Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
         },
         data: request,
-        url: 'https://localhost:8443/api/course',
+        url: hostUrl + '/api/course',
     };
     return axios(options);
 }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
+import { hostUrl } from '../../App';
 
 export class AppService {
 
@@ -8,7 +9,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://localhost:8443/api/course',
+            url: hostUrl + '/api/course',
         };
 
         const response = axios(options)
@@ -20,7 +21,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://localhost:8443/api/course/wishlist',
+            url: hostUrl + '/api/course/wishlist',
         };
 
         const response = axios(options)
@@ -31,7 +32,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://localhost:8443/api/createdcourses',
+            url: hostUrl + '/api/createdcourses',
         };
         const response = axios(options)
         return response
@@ -44,7 +45,7 @@ export class AppService {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://localhost:8443/api/course/addwishlist',
+            url: hostUrl + '/api/course/addwishlist',
         };
 
         const response = axios(options)
@@ -57,7 +58,7 @@ export class AppService {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://localhost:8443/api/course/removewishlist',
+            url: hostUrl + '/api/course/removewishlist',
         };
 
         const response = axios(options)
@@ -75,7 +76,7 @@ export class AppService {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://localhost:8443/api/course/unenrolluser',
+            url: hostUrl + '/api/course/unenrolluser',
         };
 
         const response = axios(options)

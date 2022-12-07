@@ -17,6 +17,7 @@ import qs from 'qs';
 import {Navigate, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import Home from "../home/home";
+import { hostUrl } from '../../App';
 
 
 function Copyright(props: any) {
@@ -39,7 +40,7 @@ const theme = createTheme();
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     data: qs.stringify(request),
-    url:'https://localhost:8443/api/login',
+    url: hostUrl + '/api/login',
   };
   return axios(options);
 }
@@ -139,7 +140,7 @@ export default function UserSignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

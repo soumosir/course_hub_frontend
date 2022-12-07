@@ -22,6 +22,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 import { AppService } from '../appService/appService';
+import { hostUrl } from '../../App';
 
 function Copyright(props: any) {
     return (
@@ -83,7 +84,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: `https://localhost:8443/api/course/` + params.id,
+            url: hostUrl + `/api/course/` + params.id,
         };
         console.log("PARAMETER ID", params.id)
         axios(options).then((r) => {
@@ -107,7 +108,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: 'https://localhost:8443/api/course/enrolled',
+            url: hostUrl + '/api/course/enrolled',
         };
         // console.log(options);
         return axios(options)
@@ -139,7 +140,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: {courseId: id},
-            url: 'https://localhost:8443/api/course/enrolluser',
+            url: hostUrl + '/api/course/enrolluser',
         };
         // console.log(options);
         axios(options).then((data) => {
@@ -219,7 +220,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: currentCourse,
-            url: 'https://localhost:8443/api/course',
+            url: hostUrl + '/api/course',
         };
         setIsContentAdding(false);
         axios(options).then((r) => {
@@ -263,7 +264,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: currentCourse,
-            url: 'https://localhost:8443/api/course',
+            url: hostUrl + '/api/course',
         };
         setIsExamAdding(false);
         axios(options).then((r) => {

@@ -14,6 +14,7 @@ import jwt from "jwt-decode";
 
 import {useLocation} from 'react-router-dom';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
+import { hostUrl } from '../../App';
 
 function Copyright(props: any) {
   return (
@@ -32,7 +33,7 @@ function getExam(id:any) {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:`https://localhost:8443/api/exam/${id}`,
+        url: hostUrl + `/api/exam/${id}`,
     };
     // console.log(options);
     return axios(options)
@@ -43,7 +44,7 @@ const postToExam = (exam:any) => {
         method: 'POST',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
         data : exam,
-        url:'https://localhost:8443api/exam/submit',
+        url: hostUrl + '/api/exam/submit',
     };
     // console.log(options);
     return axios(options)

@@ -7,6 +7,7 @@ import axios from "axios";
 import { contentDetail } from '../interfaces/interface';
 import { Box, Container, CssBaseline, Typography } from '@mui/material';
 import { useState } from 'react';
+import { hostUrl } from '../../App';
 
 const theme = createTheme();
 
@@ -25,7 +26,7 @@ export default function Content() {
               'content-type': 'application/json',
               Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
           },
-          url: `https://localhost:8443/api/content/`+params.id,
+          url: hostUrl + `/api/content/`+params.id,
         };
         console.log("PARAMETER ID",params.id)
         axios(options).then((r) => {
