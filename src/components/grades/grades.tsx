@@ -131,7 +131,11 @@ export default function Grades(): JSX.Element {
 
 
                 ))
-                : loading}
+                :  
+                <Typography m={5} sx={{ fontSize: 18 }} color={loading.length <= 10 ? "text.secondary":"red"}>
+                    {loading}
+                </Typography>
+                }
         </div>
         <Container key="total_marks" component="main">
                             <CssBaseline />
