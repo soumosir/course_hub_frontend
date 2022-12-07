@@ -16,6 +16,7 @@ import AlertComponent from './components/alert/alert'
 import Grades from './components/grades/grades'
 import AddCourse from "./components/courses/addcourse";
 import HomePage from './components/home/homepage'
+import NotFoundPage from './components/notFoundPage/notFoundPage'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -40,6 +41,7 @@ function App() {
         {/* <Route path='/' element={ </> }/> */}
          <Route path='/signup' element={ <UserSignUp/> }/>
          <Route path='/grades/:id' element={<Grades/>}/>
+         <Route path="*" element={<NotFoundPage/>} />
 
     </Routes>
     </div>
