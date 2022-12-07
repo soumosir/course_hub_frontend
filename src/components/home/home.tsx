@@ -15,6 +15,7 @@ import jwt from 'jwt-decode'
 import { AppService } from '../appService/appService';
 import { Button, Stack } from '@mui/material';
 import { hostUrl } from '../../App';
+import Loader from '../loader/loader';
 
 function Copyright(props: any) {
   return (
@@ -50,7 +51,8 @@ export default function Home(props: any) {
     const [isInstructor, setInstructor] = useState(false)
     const appService = new AppService()
     const navigate = useNavigate();
-
+    const [loader, setLoader] = React.useState(false);
+    
 
     React.useEffect(() => {
       console.log("HOME LOCAL STORAGE")
@@ -62,30 +64,35 @@ export default function Home(props: any) {
         setInstructor(isInstuctorTrue)
         setUsername(userMap["sub"]);
         console.log(isInstuctorTrue, userMap)
+        setLoader(true)
         isInstuctorTrue ?
         appService.getMyCreatedCourses().then(r => {
+          setLoader(false)
           setEnrolledCourseList(r.data)
           console.log("Created Courses", r.data)
           localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
       })
         :
         getEnrolledCourses().then(r => {
+          setLoader(false)
           setEnrolledCourseList(r.data)
           console.log("Enrolled Courses", r.data)
           localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
       })
       }
     }, []);
-
+    
     let isHome = true
     let isWishlist = false
 
     const navigateToAddCourse = function(event: React.MouseEvent<HTMLButtonElement>){
-      navigate("/course/add")
+      navigate("/course/add")    
     };
 
     return (
     <ThemeProvider theme={theme}>
+
+        {loader && <Loader></Loader>}
         {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
         />}
@@ -105,7 +112,7 @@ export default function Home(props: any) {
         <Typography variant='h4' gutterBottom>
             {isInstructor ? "My Courses" : "Enrolled Courses"}
         </Typography>
-        {isInstructor
+        {isInstructor 
         ?
         <Button variant="contained" onClick={event => navigateToAddCourse(event)}>Add Course</Button>
         :

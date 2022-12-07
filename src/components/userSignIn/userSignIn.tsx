@@ -18,6 +18,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {useState} from "react";
 import Home from "../home/home";
 import { hostUrl } from '../../App';
+import Loader from '../loader/loader';
 
 
 function Copyright(props: any) {
@@ -47,6 +48,8 @@ const theme = createTheme();
 
 export default function UserSignIn() {
 
+
+  const [loader, setLoader] = React.useState(false);
   const [isSuccessfulLogin, setSuccessfulLogin] = useState<number>(-1)
   const [token,setToken] = useState<string>("");
   const [failedAttempt,setFailedAttempt] = useState<number>(0)
@@ -59,6 +62,7 @@ export default function UserSignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    setLoader(true)
     login({
       username: data.get('email'),
       password: data.get('password'),
@@ -66,11 +70,13 @@ export default function UserSignIn() {
       setSuccessfulLogin(1);
       setFailedAttempt(0)
       setToken(r.data.access_token)
+      setLoader(false)
       console.log(r.data.access_token);
       window.localStorage.setItem('courseHubtoken',r.data.access_token)
     }).catch(error => {
       setSuccessfulLogin(0);
       setFailedAttempt(failedAttempt+1)
+      setLoader(false)
     });
     console.log({
       username: data.get('email'),
@@ -80,6 +86,7 @@ export default function UserSignIn() {
 
   return (
     <ThemeProvider theme={theme}>
+      {loader && <Loader></Loader>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box

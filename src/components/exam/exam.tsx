@@ -15,6 +15,7 @@ import jwt from "jwt-decode";
 import {useLocation} from 'react-router-dom';
 import { Button, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack } from '@mui/material';
 import { hostUrl } from '../../App';
+import Loader from '../loader/loader';
 
 function Copyright(props: any) {
   return (
@@ -65,6 +66,7 @@ export default function Exam(props: any) {
     const [score,setScore] = useState("-1");
     let examId = params.id;
 
+    const [loader, setLoader] = React.useState(false);
     const [isInstructor, setInstructor] = React.useState(false);
     React.useEffect(() => {
         let token = localStorage.getItem('courseHubtoken')
@@ -101,13 +103,16 @@ export default function Exam(props: any) {
       }
       console.log(dataRequest);
 
+      setLoader(true)
       postToExam(dataRequest).then((r) => {
+        setLoader(false)
         console.log("Marks is ",r.data["marks"])
         if(r.data["marks"] || r.data["marks"]==0 ){
           alert("Exam submission Successfull :: Marks"+r.data["marks"]);
           setScore("Your score is "+r.data["marks"]+" %. Correct answers are hidden");
         }
         else{
+          setLoader(false)
           alert("Exam was submitted earlier");
           setScore(r.data["error_message"])
         }
@@ -120,9 +125,10 @@ export default function Exam(props: any) {
 
 
     React.useEffect(() => {
+        setLoader(true)
         localStorage.getItem('courseHubtoken') != null &&
         getExam(examId).then(r => {
-
+            setLoader(false)
             console.log("exam is ", r.data);
             if(Object.hasOwn(r.data,"error_message")){
               setLoading(r.data.error_message);
@@ -134,6 +140,7 @@ export default function Exam(props: any) {
             setLoading("Loaded");
             }
         }).catch((err) => {
+          setLoader(false)
           alert(`Exam doesnot exist`);
           setLoading("Exam doesnot exist");
           console.log(err);
@@ -144,6 +151,7 @@ export default function Exam(props: any) {
 
     return (
     <ThemeProvider theme={theme}>
+       {loader && <Loader></Loader>}
         {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
         />}
