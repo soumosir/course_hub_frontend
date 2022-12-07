@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import jwt from 'jwt-decode'
 
 // const pages = ['Home', 'Courses', 'Wishlist'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Logout'];
 
 function NavBar() {
   let navigate = useNavigate();
