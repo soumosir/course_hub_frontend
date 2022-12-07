@@ -31,7 +31,7 @@ function getExam(id:any) {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:`https://localhost:8443/api/exam/${id}`,
+        url:`https://coursehubbackend.herokuapp.com/api/exam/${id}`,
     };
     // console.log(options);
     return axios(options)
@@ -42,7 +42,7 @@ const postToExam = (exam:any) => {
         method: 'POST',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
         data : exam,
-        url:'https://localhost:8443/api/exam/submit',
+        url:'https://coursehubbackend.herokuapp.comapi/exam/submit',
     };
     // console.log(options);
     return axios(options)

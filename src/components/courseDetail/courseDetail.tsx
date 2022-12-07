@@ -80,7 +80,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: `https://localhost:8443/api/course/` + params.id,
+            url: `https://coursehubbackend.herokuapp.com/api/course/` + params.id,
         };
         console.log("PARAMETER ID", params.id)
         axios(options).then((r) => {
@@ -100,7 +100,7 @@ export default function CourseDetail() {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
-            url: 'https://localhost:8443/api/course/enrolled',
+            url: 'https://coursehubbackend.herokuapp.com/api/course/enrolled',
         };
         // console.log(options);
         return axios(options)
@@ -114,7 +114,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: {courseId: id},
-            url: 'https://localhost:8443/api/course/enrolluser',
+            url: 'https://coursehubbackend.herokuapp.com/api/course/enrolluser',
         };
         // console.log(options);
         axios(options).then((data) => {
@@ -192,7 +192,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: currentCourse,
-            url: 'https://localhost:8443/api/course',
+            url: 'https://coursehubbackend.herokuapp.com/api/course',
         };
         setIsContentAdding(false);
         axios(options).then((r) => {
@@ -235,7 +235,7 @@ export default function CourseDetail() {
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
             },
             data: currentCourse,
-            url: 'https://localhost:8443/api/course',
+            url: 'https://coursehubbackend.herokuapp.com/api/course',
         };
         setIsExamAdding(false);
         axios(options).then((r) => {

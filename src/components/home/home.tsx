@@ -31,7 +31,7 @@ function getEnrolledCourses() {
     const options = {
         method: 'GET',
         headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-        url:'https://localhost:8443/api/course/enrolled',
+        url:'https://coursehubbackend.herokuapp.com/api/course/enrolled',
     };
     // console.log(options);
     return axios(options)
@@ -70,7 +70,7 @@ export default function Home(props: any) {
       })
       }
     }, []);
-    
+
     let isHome = true
     let isWishlist = false
     return (

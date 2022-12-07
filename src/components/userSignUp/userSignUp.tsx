@@ -34,7 +34,7 @@ function register(request: any){
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     data: request,
-    url:'https://localhost:8443/api/user/register',
+    url:'https://coursehubbackend.herokuapp.com/api/user/register',
   };
   return axios(options);
 }

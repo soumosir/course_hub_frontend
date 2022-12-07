@@ -8,7 +8,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://localhost:8443/api/course',
+            url:'https://coursehubbackend.herokuapp.com/api/course',
         };
 
         const response = axios(options)
@@ -20,7 +20,7 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://localhost:8443/api/course/wishlist',
+            url:'https://coursehubbackend.herokuapp.com/api/course/wishlist',
         };
 
         const response = axios(options)
@@ -31,20 +31,20 @@ export class AppService {
         const options = {
             method: 'GET',
             headers: { 'content-type': 'application/json', Authorization : `Bearer ${localStorage.getItem('courseHubtoken')}` },
-            url:'https://localhost:8443/api/createdcourses',
+            url:'https://coursehubbackend.herokuapp.com/api/createdcourses',
         };
         const response = axios(options)
         return response
     }
 
-    
+
 
     public async addToWishlist(request: any): Promise<any> {
         const options = {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://localhost:8443/api/course/addwishlist',
+            url:'https://coursehubbackend.herokuapp.com/api/course/addwishlist',
         };
 
         const response = axios(options)
@@ -57,7 +57,7 @@ export class AppService {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${localStorage.getItem('courseHubtoken')}`, 'content-type': 'application/json' },
             data: request,
-            url:'https://localhost:8443/api/course/removewishlist',
+            url:'https://coursehubbackend.herokuapp.com/api/course/removewishlist',
         };
 
         const response = axios(options)
