@@ -47,15 +47,18 @@ export default function UserSignUp() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    setLoader(true)
     register({
       name: data.get('firstName')+' '+data.get('lastName'),
       username: data.get('username'),
       email:data.get('email'),
       password:data.get('password')
     }).then((r) => {
+      setLoader(false)
       alert("Sign Up Successfull");
       navigate("/signin");
     }).catch((err) => {
+      setLoader(false)
       alert(`Sign Up Unsuccessfull + ${err}`);
     })
   };

@@ -19,6 +19,7 @@ import { AppService } from "../appService/appService";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CourseCard from '../courseCard/courseCard';
 import { Navigate, useNavigate } from 'react-router-dom';
+import Loader from '../loader/loader';
 
 function Copyright(props: any) {
   return (
@@ -41,9 +42,14 @@ export default function Wishlist() {
   const [wishlistCourses, setWishlistCourseList] = React.useState([])
   const appService = new AppService()
   const navigate = useNavigate();
+
+  const [loader, setLoader] = React.useState(false);
+
   React.useEffect(() => {
+      setLoader(true)
       appService.getWishlist().then(r => {
           console.log(r.data)
+          setLoader(false)
           setWishlistCourseList(r.data)
       })
     }, []);
@@ -52,6 +58,8 @@ export default function Wishlist() {
   let isWishlist = true
   return (
     <ThemeProvider theme={theme}>
+
+    {loader && <Loader></Loader>}
       {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
         />}

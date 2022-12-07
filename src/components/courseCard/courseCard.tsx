@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { AppService } from "../appService/appService";
 import { Alert, Snackbar } from '@mui/material';
 import { useState } from 'react';
+import Loader from '../loader/loader';
 
 function Copyright(props: any) {
   return (
@@ -48,6 +49,8 @@ export default function courseCard({data}: any): JSX.Element {
     let [emptyList, setEmptyList] = useState(false)
     const [loading,setLoading] = useState("Loading...");
 
+    const [loader, setLoader] = React.useState(false);
+
     let [courseList, setCourseList] = useState([])
     React.useEffect(() => {
         setCourseList(data[0])
@@ -56,7 +59,9 @@ export default function courseCard({data}: any): JSX.Element {
       let [wishlistCourses, setWishlistCourses] = React.useState([])
       if (!isHome) {
         React.useEffect(() => {
+            setLoader(true)
             appService.getWishlist().then(r => {
+                setLoader(false)
                 console.log(r.data)
                 setWishlistCourses(r.data)
             })
@@ -79,9 +84,9 @@ export default function courseCard({data}: any): JSX.Element {
         const request = {
             "wishlistId": courseId
         }
-
+        setLoader(true)
         appService.addToWishlist(request).then(r => {
-            
+            setLoader(false)
             let addedCourse = courseList.filter((course: course) => {
                 return course.id == courseId;
             });
@@ -91,6 +96,7 @@ export default function courseCard({data}: any): JSX.Element {
             setWishlistCourses(newWishlist)
 
           }).catch(error => {
+            setLoader(false)
             setUnsuccessfulWishlistAddition(true)
           });
     };
@@ -99,15 +105,16 @@ export default function courseCard({data}: any): JSX.Element {
         const request = {
             "wishlistId": courseId
         }
-
+        setLoader(true)
         appService.removeFromWishlist(request).then(r => {
-            
+            setLoader(false)
             let filteredCourseList = courseList.filter((course: course) => {
                 return course.id != courseId;
             });
             setCourseList(filteredCourseList)
 
         }).catch(error => {
+            setLoader(false)
             setUnsuccessfulWishlistDeletion(true)
         });
     };
@@ -122,6 +129,8 @@ export default function courseCard({data}: any): JSX.Element {
 
     return <>{(
         <div>
+
+            {loader && <Loader></Loader>}
             { }
              { <Container component="main">
                 <Snackbar open= {isUnuccessfulWishlistAddition} onClose={handleCloseAddWishlist} autoHideDuration={4000} >

@@ -75,12 +75,14 @@ export default function AddCourse() {
             setExam(e.target.result);
         };
     }
+    const [loader, setLoader] = React.useState(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         // if(exam == null || content == null){
         //     delay(1000);
         // }
+        setLoader(true)
         register({
             name : data.get('name'),
             code : data.get('code'),
@@ -91,8 +93,10 @@ export default function AddCourse() {
             contents : JSON.parse(content as unknown as string),
             exams : JSON.parse(exam as unknown as string)
         }).then((r) => {
+            setLoader(false)
             navigate("/courses")
         }).catch((err) => {
+            setLoader(false)
             window.alert(err.message())
         });
     };
@@ -101,6 +105,7 @@ export default function AddCourse() {
     // @ts-ignore
     return (
         <ThemeProvider theme={theme}>
+             {loader && <Loader></Loader>}
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <Box

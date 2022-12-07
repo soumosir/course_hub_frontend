@@ -15,7 +15,7 @@ import axios from "axios";
 import ContentCard from '../contentCard/contentCard';
 import ExamCard from '../examCard/examCard';
 import Grid from "@mui/material/Grid";
-import {Input} from "@mui/material";
+import {Backdrop, CircularProgress, Input, LinearProgress} from "@mui/material";
 import jwt from "jwt-decode";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -23,6 +23,9 @@ import Checkbox from "@mui/material/Checkbox";
 import Box from "@mui/material/Box";
 import { AppService } from '../appService/appService';
 import { hostUrl } from '../../App';
+import { sizing } from '@mui/system';
+import Loader from '../loader/loader';
+
 
 function Copyright(props: any) {
     return (
@@ -87,17 +90,21 @@ export default function CourseDetail() {
             url: hostUrl + `/api/course/` + params.id,
         };
         console.log("PARAMETER ID", params.id)
+        setLoader(true)
         axios(options).then((r) => {
             // console.log(r.data);
             setCourseList([r.data])
             console.log("CourseList")
             console.log(r.data)
             setFirst(true);
+            setLoader(false)
             // console.log(courseList)
         })
 
+        setLoader(true)
         getEnrolledCourses().then(r => {
             setEnrolledCourseList(r.data)
+            setLoader(false)
         })
     }, []);
 
@@ -118,16 +125,18 @@ export default function CourseDetail() {
         const request = {
             "courseId": courseId
         }
-
+        setLoader(true)
         appService.unenrollCourse(request).then(r => {
             getEnrolledCourses().then(r => {
                 setEnrolledCourseList(r.data)
                 // localStorage.setItem('enrolledCourses', JSON.stringify(r.data));
+                setLoader(false)
                 window.location.reload();
             })
 
         }).catch(error => {
             console.log("Error Unerolling User", error)
+            setLoader(false)
             // setUnsuccessfulWishlistDeletion(true)
         });
     }
@@ -143,15 +152,18 @@ export default function CourseDetail() {
             url: hostUrl + '/api/course/enrolluser',
         };
         // console.log(options);
+        setLoader(true)
         axios(options).then((data) => {
             console.log(data)
             getEnrolledCourses().then(r => {
                 setEnrolledCourseList(r.data)
+                setLoader(false)
                 window.location.reload();
                 // localStorage.setItem('enrolledCourses', JSON.stringify(r.data));
                 // window.location.reload();
             })
         }).catch((err) => {
+            setLoader(false)
             console.log(err);
         });
     }
@@ -223,8 +235,10 @@ export default function CourseDetail() {
             url: hostUrl + '/api/course',
         };
         setIsContentAdding(false);
+        setLoader(true)
         axios(options).then((r) => {
             setCourseList([r.data])
+            setLoader(false)
             console.log("successfull edit")
         })
     }
@@ -267,9 +281,11 @@ export default function CourseDetail() {
             url: hostUrl + '/api/course',
         };
         setIsExamAdding(false);
+        setLoader(true)
         axios(options).then((r) => {
             console.log("ADD CONTENT",r.data)
             setCourseList([r.data])
+            setLoader(false)
         })
     }
 
@@ -287,12 +303,17 @@ export default function CourseDetail() {
         setIsContentAdding(false);
         setIsExamAdding(value);
     }
+    // const currentHeight = window.innerHeight
 
     // @ts-ignore
     // @ts-ignore
     // @ts-ignore
     // @ts-ignore
+
+    const [loader, setLoader] = React.useState(false);
+    
     return (
+        
         courseList.map(({
                             id,
                             code,
@@ -308,7 +329,9 @@ export default function CourseDetail() {
                             exams,
                             contents
                         }: card) => (
+                            
             <ThemeProvider theme={theme}>
+                {loader && <Loader></Loader>}
                 <Container component="main">
                     <CssBaseline/>
                     <Typography variant='h3' m={5} gutterBottom>

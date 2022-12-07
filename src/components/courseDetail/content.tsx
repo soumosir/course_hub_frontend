@@ -8,6 +8,7 @@ import { contentDetail } from '../interfaces/interface';
 import { Box, Container, CssBaseline, Typography } from '@mui/material';
 import { useState } from 'react';
 import { hostUrl } from '../../App';
+import Loader from '../loader/loader';
 
 const theme = createTheme();
 
@@ -15,6 +16,8 @@ export default function Content() {
     const params = useParams();
     const [contentDetails, setContentDetails] = useState([])
     const [loading,setLoading] = useState("Loading...");
+    const [loader, setLoader] = React.useState(false);
+
     const navigate = useNavigate();
     if(localStorage.getItem('courseHubtoken') == null){
         navigate("/signin")
@@ -29,8 +32,10 @@ export default function Content() {
           url: hostUrl + `/api/content/`+params.id,
         };
         console.log("PARAMETER ID",params.id)
+        setLoader(true)
         axios(options).then((r) => {
           // console.log(r.data);
+          setLoader(false)
           if(Object.hasOwn(r.data,"error_message")){
             setLoading(r.data.error_message)
           }
@@ -46,6 +51,7 @@ export default function Content() {
     // const arr = ['https://www.youtube.com/watch?v=BQwj6A99oVc','https://www.youtube.com/watch?v=O753uuutqH8&t=10s&ab_channel=CrashCourse','https://www.youtube.com/watch?v=M_GVUj86VaY&list=RDLVO753uuutqH8&index=2&ab_channel=KeepOnCoding']
     return (
         <div>
+        {loader && <Loader></Loader>}
         {loading=="Loaded" ?
         contentDetails.map(({
             id,

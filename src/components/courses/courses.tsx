@@ -17,6 +17,7 @@ import { AppService } from "../appService/appService";
 import {useState} from "react";
 import { course } from '../interfaces/interface'
 import {Navigate, useNavigate} from "react-router-dom";
+import Loader from '../loader/loader';
 
 
 function Copyright(props: any) {
@@ -45,9 +46,13 @@ export default function Courses() {
         navigate("/signin")
     }
 
+    const [loader, setLoader] = React.useState(false);
     React.useEffect(() => {
+
+        setLoader(true)
         appService.getCourses().then(r => {
-            setCourseList(r.data)
+          setLoader(false)  
+          setCourseList(r.data)
         })
       }, []);
 
@@ -56,6 +61,8 @@ export default function Courses() {
     // @ts-ignore
     return (
     <ThemeProvider theme={theme}>
+
+      {loader && <Loader></Loader>}
         {localStorage.getItem('courseHubtoken') == null && <Navigate
             to="/signin"
         />}
