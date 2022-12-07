@@ -8,7 +8,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "tsc",
-    "start" : "npm run serve"
+    "start": "npm run serve"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
