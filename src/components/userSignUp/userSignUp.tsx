@@ -61,7 +61,7 @@ export default function UserSignUp() {
       navigate("/signin");
     }).catch((err) => {
       setLoader(false)
-      alert(`Sign Up Unsuccessfull + ${err}`);
+      alert(`Sign Up Unsuccessfull \n${err.response.data['error_message']}`);
     })
   };
 
@@ -116,6 +116,9 @@ export default function UserSignUp() {
                   name="email"
                   autoComplete="email"
                 />
+                <Typography sx={{ fontSize: 12, mb: 0 }} color="text.secondary">
+                  Enter valid email to receive notifications
+                </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -137,13 +140,16 @@ export default function UserSignUp() {
                   id="password"
                   autoComplete="new-password"
                 />
+                <Typography sx={{ fontSize: 12, mb: 0 }} color="text.secondary">
+                  Password should be 8-30 characters long and should contain lowercase, uppercase, special character and digit.
+                </Typography>
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
