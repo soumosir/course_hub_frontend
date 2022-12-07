@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host --port 9088",
     "build": "vite build",
     "serve": "vite preview",
     "test": "tsc",
-    "start": "npm run serve"
+    "start": "npm run dev"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
