@@ -263,6 +263,7 @@ export default function CourseDetail() {
 
 
         currentCourse.contents = [newContent];
+        currentCourse.exams = [];
 
         // if (newExam != null) {
         //     isChanged = true;
@@ -327,6 +328,7 @@ export default function CourseDetail() {
         }
 
         currentCourse.exams =[newContent];
+        currentCourse.contents = [];
 
         // if (newExam != null) {
         //     isChanged = true;
