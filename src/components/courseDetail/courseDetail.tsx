@@ -206,6 +206,7 @@ export default function CourseDetail() {
         const newContent = {
             name:data.get('name'),
             type:data.get('type'),
+            description : data.get('description'),
             url:data.get('url')
         };
         if (currentCourse.contents === null) {
@@ -439,6 +440,16 @@ export default function CourseDetail() {
                                     <MenuItem value="Video">Video</MenuItem>
                                     <MenuItem value="Pdf">PDF</MenuItem>
                                 </TextField>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="description"
+                                    label="Description"
+                                    name="description"
+                                    autoComplete="family-name"
+                                />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
