@@ -54,6 +54,7 @@ export default function AddCourse() {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [content, setContent] = useState(null);
+    const [errorMessage,setErrorMessage]  = useState("");
     const [exam, setExam] = useState(null);
     const navigate = useNavigate();
     if(localStorage.getItem('courseHubtoken') == null){
@@ -76,6 +77,34 @@ export default function AddCourse() {
             setExam(e.target.result);
         };
     }
+
+    const validate = (data :any) => {
+
+        let err = "";
+        if(data.get('name')==undefined || data.get('name').length<8 || data.get('name').length>20){
+            err += " Course name should be more than 8 and less than 20. "
+        }
+        if(data.get('code')==undefined || data.get('code').length<3 || data.get('code').lecture>20){
+            err += " Course Code  should be more than 3 and less than 20."
+        }
+        if(data.get('description')==undefined || data.get('description').length<8 || data.get('description').length>50){
+            err += " Course description should be more than 8 and less than 50. "
+        }
+        if(data.get('totalSeats')<=0 ){
+            err += " TotalSeats should be positive integer. "
+        }
+        if(data.get('name')==undefined || data.get('name')<8 || data.get('name')>20){
+            err += " Course name should be more than 8 and less than 20. "
+        }
+       
+        if(err!=""){
+            setErrorMessage(err);
+            return false;
+        }
+        return true;
+        
+    }
+
     const [loader, setLoader] = React.useState(false);
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -83,22 +112,32 @@ export default function AddCourse() {
         // if(exam == null || content == null){
         //     delay(1000);
         // }
+        if(validate(data)==false){
+            return
+        }
         setLoader(true)
         register({
             name : data.get('name'),
             code : data.get('code'),
             description : data.get('description'),
             totalSeats : data.get('totalSeats'),
-            startTime : startDate.getTime(),
-            endTime:endDate.getTime(),
+            // startTime : startDate.getTime(),
+            // endTime:endDate.getTime(),
             contents : JSON.parse(content as unknown as string),
             exams : JSON.parse(exam as unknown as string)
         }).then((r) => {
             setLoader(false)
             navigate("/courses")
         }).catch((err) => {
+            console.log(err.response.data['error_message']);
+            if(err.response.data['error_message']==null){
+                setErrorMessage("Error parsing data! Please enter with a different unique course code!") 
+            }
+            else{
+            setErrorMessage(err.response.data['error_message'])
+            }
             setLoader(false)
-            window.alert(err.message())
+            // window.alert(err.message())
         });
     };
 
@@ -123,6 +162,11 @@ export default function AddCourse() {
                     <Typography component="h1" variant="h5">
                         Add Course
                     </Typography>
+                    
+                    <Typography sx={{ fontSize: 18 }} color="red">
+                    {errorMessage}
+                    </Typography>
+                    
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
@@ -160,23 +204,24 @@ export default function AddCourse() {
                                 <TextField
                                     required
                                     fullWidth
+                                    type="number"
                                     id="totalSeats"
                                     label="Total Seats"
                                     name="totalSeats"
                                     autoComplete="totalSeats"
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 Start Date - <DatePicker selected={startDate} onChange={setStartDate}/>
                             </Grid>
                             <Grid item xs={12}>
                                 End Date - <DatePicker selected={endDate} onChange={setEndDate}/>
+                            </Grid> */}
+                            <Grid item xs={12}>
+                                Content - <Input aria-label="Content" key="content" type = "file" accept=".json" onChange={handleContentChange}/>
                             </Grid>
                             <Grid item xs={12}>
-                                Content - <Input aria-label="Content" key="content" type = "file" onChange={handleContentChange}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                Exam -<Input aria-label="Exams" key="exam" type = "file" onChange={handleExamChange}/>
+                                Exam -<Input aria-label="Exams" key="exam" type = "file" accept=".json" onChange={handleExamChange}/>
                             </Grid>
 
                         </Grid>
@@ -190,20 +235,20 @@ export default function AddCourse() {
                         </Button>
                         Content Format
                         <div>{JSON.stringify([
-                            {"id":9,"name":"lecture 1","type":"video","url":"google.com"},
-                            {"id":10,"name":"lecture pdf","type":"image","url":"google.com"}
+                            {"name":"lecture 1","type":"video","url":"google.com","description":"i am description"},
+                            {"name":"lecture pdf","type":"image","url":"google.com","description":"i am description"}
                         ], null, 2) }</div>
                         <br/>
                         Exam Format
                         <div>{JSON.stringify([
-                            {"id":7,"name":"Quiz name 1","type":"QUIZ","duration":120,
+                            {"name":"Quiz name 1","type":"QUIZ","duration":120,
                                 "questions":"{how many bytes is  char?=[3, 2, 1, 0], what is array?=[DS, wall, io, boolean], what is 1+9?=[3, 2, 1, 10], what is 1+1?=[3, 2, 1, 0]}",
                                 "answers":"{how many bytes is  char?=1, what is array?=DS, what is 1+9?=10, what is 1+1?=2}"}
                         ], null, 2) }</div>
 
                     </Box>
                 </Box>
-                {/* <Copyright sx={{mt: 5}}/> */}
+                <Copyright sx={{mt: 5}}/>
             </Container>
         </ThemeProvider>
     );
