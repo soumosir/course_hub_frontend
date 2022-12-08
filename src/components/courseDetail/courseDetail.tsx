@@ -312,12 +312,6 @@ export default function CourseDetail() {
     // @ts-ignore
 
     const [loader, setLoader] = React.useState(false);
-<<<<<<< HEAD
-    // let myString = "ABC {\'\n\'} ABC"
-    
-=======
-
->>>>>>> 63c62e05d3b5b26cd431f929d904f57ea7a7b9c6
     return (
 
         courseList.map(({
