@@ -306,11 +306,23 @@ export default function CourseDetail() {
             questions:questions,
             answers:answers
         };
+        let isError = false;
+
         const error = {}
         if(data.get('exam_duration')<=0){
             // @ts-ignore
-
             error['exam_duration'] = "Duration should be a positive integer.";
+        }
+        if(data.get('name') == null|| newContent.type.length == 0){
+            error['name'] = "Required";
+            isError = true;
+        }
+        if(data.get('tyoe') == null|| newContent.description.length == 0){
+            error['type'] = "Required";
+            isError = true;
+        }
+
+        if(isError){
             setErrors(error);
             return
         }
@@ -552,6 +564,8 @@ export default function CourseDetail() {
                                     id="exam_name"
                                     label="Name"
                                     autoFocus
+                                    error={errors['name']!=null}
+                                    helperText={errors['name']!=null?"Required":""}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -563,6 +577,8 @@ export default function CourseDetail() {
                                     name="type"
                                     autoComplete="exam-type"
                                     select
+                                    error={errors['type']!=null}
+                                    helperText={errors['type']!=null?"Required":""}
                                 >
                                     <MenuItem value="Quiz">Quiz</MenuItem>
                                     <MenuItem value="Exam">Exam</MenuItem>
