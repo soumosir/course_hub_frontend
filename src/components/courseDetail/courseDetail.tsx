@@ -256,9 +256,8 @@ export default function CourseDetail() {
             error['description'] = "Required";
             isError = true;
         }
+        setErrors(error);
         if(isError){
-            setErrors(error);
-            //console.log(error);
             return;
         }
 
@@ -322,9 +321,8 @@ export default function CourseDetail() {
             error['exam_type'] = "Required";
             isError = true;
         }
-
+        setErrors(error);
         if(isError){
-            setErrors(error);
             return
         }
 
@@ -508,13 +506,13 @@ export default function CourseDetail() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="examType"
+                                    id="type"
                                     label="Type"
-                                    name="examType"
+                                    name="type"
                                     autoComplete="family-name"
                                     select
-                                    error={errors['examType']!=null}
-                                    helperText={errors['examType']!=null?"Required":""}
+                                    error={errors['type']!=null}
+                                    helperText={errors['type']!=null?"Required":""}
                                 >
                                     <MenuItem value="Video">Video</MenuItem>
                                     <MenuItem value="Pdf">PDF</MenuItem>
