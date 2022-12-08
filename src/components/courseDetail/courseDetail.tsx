@@ -15,7 +15,7 @@ import axios from "axios";
 import ContentCard from '../contentCard/contentCard';
 import ExamCard from '../examCard/examCard';
 import Grid from "@mui/material/Grid";
-import {Backdrop, CircularProgress, Input, LinearProgress} from "@mui/material";
+import {Backdrop, CircularProgress, Input, LinearProgress, MenuItem} from "@mui/material";
 import jwt from "jwt-decode";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -123,7 +123,7 @@ export default function CourseDetail() {
 
     function unenrollFromCourse(courseId: any){
         const request = {
-            "courseId": courseId
+            courseId
         }
         setLoader(true)
         appService.unenrollCourse(request).then(r => {
@@ -206,6 +206,7 @@ export default function CourseDetail() {
         const newContent = {
             name:data.get('name'),
             type:data.get('type'),
+            description : data.get('description'),
             url:data.get('url')
         };
         if (currentCourse.contents === null) {
@@ -311,10 +312,14 @@ export default function CourseDetail() {
     // @ts-ignore
 
     const [loader, setLoader] = React.useState(false);
+<<<<<<< HEAD
     // let myString = "ABC {\'\n\'} ABC"
     
+=======
+
+>>>>>>> 63c62e05d3b5b26cd431f929d904f57ea7a7b9c6
     return (
-        
+
         courseList.map(({
                             id,
                             code,
@@ -330,7 +335,7 @@ export default function CourseDetail() {
                             exams,
                             contents
                         }: card) => (
-                            
+
             <ThemeProvider theme={theme}>
                 {loader && <Loader></Loader>}
                 <Container component="main">
@@ -436,6 +441,20 @@ export default function CourseDetail() {
                                     label="Type"
                                     name="type"
                                     autoComplete="family-name"
+                                    select
+                                >
+                                    <MenuItem value="Video">Video</MenuItem>
+                                    <MenuItem value="Pdf">PDF</MenuItem>
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="description"
+                                    label="Description"
+                                    name="description"
+                                    autoComplete="family-name"
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -479,7 +498,11 @@ export default function CourseDetail() {
                                     label="exam_type"
                                     name="type"
                                     autoComplete="exam-type"
-                                />
+                                    select
+                                >
+                                    <MenuItem value="Quiz">Quiz</MenuItem>
+                                    <MenuItem value="Exam">Exam</MenuItem>
+                                </TextField>
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField

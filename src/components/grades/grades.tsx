@@ -45,7 +45,7 @@ export default function Grades(): JSX.Element {
     let navigate = useNavigate();
     const [total,setTotal] = React.useState(0.0);
     const [loader, setLoader] = React.useState(false);
-    
+
     if(localStorage.getItem('courseHubtoken') == null){
         navigate("/signin")
     }
@@ -82,7 +82,9 @@ export default function Grades(): JSX.Element {
             setLoading("Loaded");
         }).catch((err) => {
             setLoader(false)
-          alert(`Result not found`);
+            if(localStorage.getItem('courseHubtoken') != null) {
+                alert(`Result not found`);
+            }
           setLoading("Error occured. Please try again");
           console.log(err);
         })
