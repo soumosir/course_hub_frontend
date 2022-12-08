@@ -70,7 +70,7 @@ export default function CourseDetail() {
     }, []);
 
     const [first, setFirst] = useState(false);
-    console.log("COURSE DETAILS")
+    //console.log("COURSE DETAILS")
     // getCourseDetail(params.id)
     // getCourseDetail(11);
 
@@ -90,19 +90,19 @@ export default function CourseDetail() {
             },
             url: hostUrl + `/api/course/` + params.id,
         };
-        console.log("PARAMETER ID", params.id)
+        //console.log("PARAMETER ID", params.id)
         setLoader(true)
         axios(options).then((r) => {
-            // console.log(r.data);
+            // //console.log(r.data);
             setCourseList([r.data])
-            console.log("CourseList")
-            console.log(r.data)
+            //console.log("CourseList")
+            //console.log(r.data)
             setFirst(true);
             setLoader(false)
-            // console.log(courseList)
+            // //console.log(courseList)
         }).catch((err) => {
             setLoader(false)
-            console.log(err.response.status);
+            //console.log(err.response.status);
             if (err.response.status == 403) {
               navigate("/signin")
             }
@@ -114,7 +114,7 @@ export default function CourseDetail() {
             setLoader(false)
         }).catch((err) => {
             setLoader(false)
-            console.log(err.response.status);
+            //console.log(err.response.status);
             if (err.response.status == 403) {
               navigate("/signin")
             }
@@ -130,7 +130,7 @@ export default function CourseDetail() {
             },
             url: hostUrl + '/api/course/enrolled',
         };
-        // console.log(options);
+        // //console.log(options);
         return axios(options)
     }
 
@@ -149,7 +149,7 @@ export default function CourseDetail() {
 
         }).catch((err) => {
             setLoader(false)
-            console.log(err.response.status);
+            //console.log(err.response.status);
             if (err.response.status == 403) {
               navigate("/signin")
             }
@@ -166,10 +166,10 @@ export default function CourseDetail() {
             data: {courseId: id},
             url: hostUrl + '/api/course/enrolluser',
         };
-        // console.log(options);
+        // //console.log(options);
         setLoader(true)
         axios(options).then((data) => {
-            console.log(data)
+            //console.log(data)
             getEnrolledCourses().then(r => {
                 setEnrolledCourseList(r.data)
                 setLoader(false)
@@ -179,7 +179,7 @@ export default function CourseDetail() {
             })
         }).catch((err) => {
             setLoader(false)
-            console.log(err.response.status);
+            //console.log(err.response.status);
             if (err.response.status == 403) {
               navigate("/signin")
             }
@@ -190,7 +190,7 @@ export default function CourseDetail() {
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
-            console.log("Content", e.target.result);
+            //console.log("Content", e.target.result);
             setQuestions(e.target.result);
         };
     }
@@ -198,7 +198,7 @@ export default function CourseDetail() {
         const fileReader = new FileReader();
         fileReader.readAsText(e.target.files[0], "UTF-8");
         fileReader.onload = e => {
-            // console.log("Exam", e.target.result);
+            // //console.log("Exam", e.target.result);
             setAnswers(e.target.result);
         };
     }
@@ -206,7 +206,7 @@ export default function CourseDetail() {
         const tok :string  = localStorage.getItem('courseHubtoken') || "";
         const userMap : any = jwt(tok);
         const currentCourse = courseList[0];
-        console.log(currentCourse,userMap);
+        //console.log(currentCourse,userMap);
         return currentCourse['instructor'] == userMap.sub;
     }
 
@@ -236,6 +236,7 @@ export default function CourseDetail() {
             description : data.get('description') as string,
             url:data.get('url') as string
         };
+        //console.log(newContent);
         const error = {};
         let isError = false;
         if(!isValidHttpUrl(data.get('url'))){
@@ -257,15 +258,13 @@ export default function CourseDetail() {
         }
         if(isError){
             setErrors(error);
-            console.log(error);
+            //console.log(error);
             return;
         }
 
-        if (currentCourse.contents === null) {
-            currentCourse.contents = newContent;
-        } else {
-            currentCourse.contents.push(newContent);
-        }
+
+        currentCourse.contents = [newContent];
+
         // if (newExam != null) {
         //     isChanged = true;
         //     if (currentCourse.exams === null) {
@@ -274,12 +273,12 @@ export default function CourseDetail() {
         //         currentCourse.exams.push(...newExam)
         //     }
         // }
-        // console.log(currentCourse);
+        // //console.log(currentCourse);
 
         // currentCourse.exams.addAll(newExam);
 
         const options = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
@@ -292,20 +291,22 @@ export default function CourseDetail() {
         axios(options).then((r) => {
             setCourseList([r.data])
             setLoader(false)
-            console.log("successfull edit")
+            //console.log("successfull edit")
         })
     }
     const addExam = (event: React.FormEvent<HTMLFormElement>) => {
         const currentCourse = courseList[0];
         event.preventDefault();
+        try{
         const data = new FormData(event.currentTarget);
         const newContent = {
-            name:data.get('name'),
-            type:data.get('type'),
+            name:data.get('name') as string,
+            type:data.get('exam_type') as string,
             duration:data.get('exam_duration'),
-            questions:questions,
-            answers:answers
+            questions:JSON.parse(questions as unknown as string),
+            answers:JSON.parse(answers as unknown as string)
         };
+        console.log(newContent);
         let isError = false;
 
         const error = {}
@@ -313,12 +314,12 @@ export default function CourseDetail() {
             // @ts-ignore
             error['exam_duration'] = "Duration should be a positive integer.";
         }
-        if(data.get('name') == null|| newContent.type.length == 0){
+        if(data.get('name') == null|| newContent.name.length == 0){
             error['name'] = "Required";
             isError = true;
         }
-        if(data.get('tyoe') == null|| newContent.description.length == 0){
-            error['type'] = "Required";
+        if(data.get('exam_type') == null|| newContent.type.length == 0){
+            error['exam_type'] = "Required";
             isError = true;
         }
 
@@ -326,12 +327,9 @@ export default function CourseDetail() {
             setErrors(error);
             return
         }
-        console.log(newContent);
-        if (currentCourse.exams === null) {
-            currentCourse.exams = newContent;
-        } else {
-            currentCourse.exams.push(newContent);
-        }
+
+        currentCourse.exams =[newContent];
+
         // if (newExam != null) {
         //     isChanged = true;
         //     if (currentCourse.exams === null) {
@@ -340,12 +338,12 @@ export default function CourseDetail() {
         //         currentCourse.exams.push(...newExam)
         //     }
         // }
-        // console.log(currentCourse);
+        // //console.log(currentCourse);
 
         // currentCourse.exams.addAll(newExam);
 
         const options = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json',
                 Authorization: `Bearer ${localStorage.getItem('courseHubtoken')}`
@@ -356,16 +354,19 @@ export default function CourseDetail() {
         setIsExamAdding(false);
         setLoader(true)
         axios(options).then((r) => {
-            console.log("ADD CONTENT",r.data)
+            //console.log("ADD CONTENT",r.data)
             setCourseList([r.data])
             setLoader(false)
-        })
+        })}
+        catch (e){
+            //console.log("excp = ",e);
+        }
     }
 
     const handleGradesClick = function (event: React.MouseEvent<HTMLButtonElement>, id: number) {
         // Somewhere in your code, e.g. inside a handler:
-        // console.log(data.courseCode, data.courseInstructor)
-        console.log(id);
+        // ////console.log(data.courseCode, data.courseInstructor)
+        ////console.log(id);
         navigate("/grades/" + id);
     };
     const handleEditContent = (value: boolean) => {
@@ -507,13 +508,13 @@ export default function CourseDetail() {
                                 <TextField
                                     required
                                     fullWidth
-                                    id="type"
+                                    id="examType"
                                     label="Type"
-                                    name="type"
+                                    name="examType"
                                     autoComplete="family-name"
                                     select
-                                    error={errors['type']!=null}
-                                    helperText={errors['type']!=null?"Required":""}
+                                    error={errors['examType']!=null}
+                                    helperText={errors['examType']!=null?"Required":""}
                                 >
                                     <MenuItem value="Video">Video</MenuItem>
                                     <MenuItem value="Pdf">PDF</MenuItem>
@@ -574,11 +575,11 @@ export default function CourseDetail() {
                                     fullWidth
                                     id="exam_type"
                                     label="exam_type"
-                                    name="type"
+                                    name="exam_type"
                                     autoComplete="exam-type"
                                     select
-                                    error={errors['type']!=null}
-                                    helperText={errors['type']!=null?"Required":""}
+                                    error={errors['exam_type']!=null}
+                                    helperText={errors['exam_type']!=null?"Required":""}
                                 >
                                     <MenuItem value="Quiz">Quiz</MenuItem>
                                     <MenuItem value="Exam">Exam</MenuItem>
@@ -598,10 +599,10 @@ export default function CourseDetail() {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                Questions - <Input aria-label="Content" key="content" type = "file" onChange={handleQuestionChange}/>
+                                Questions - <Input aria-label="Content" key="content" accept=".json" type = "file" onChange={handleQuestionChange}/>
                             </Grid>
                             <Grid item xs={12}>
-                                Answers -<Input aria-label="Exams" key="exam" type = "file" onChange={handleAnswersChange}/>
+                                Answers -<Input aria-label="Exams" key="exam" accept=".json" type = "file" onChange={handleAnswersChange}/>
                             </Grid>
                         </Grid>
                         <Button
@@ -612,6 +613,12 @@ export default function CourseDetail() {
                         >
                             Add Exam
                         </Button>
+                        Questions/Answers Format
+                        <div>{JSON.stringify([
+                            {"name":"Quiz name 1","type":"QUIZ","duration":120,
+                                "questions":"{how many bytes is  char?=[3, 2, 1, 0], what is array?=[DS, wall, io, boolean], what is 1+9?=[3, 2, 1, 10], what is 1+1?=[3, 2, 1, 0]}",
+                                "answers":"{how many bytes is  char?=1, what is array?=DS, what is 1+9?=10, what is 1+1?=2}"}
+                        ], null, 2) }</div>
                     </Box>}
                     {!isContentAdding && !isExamAdding && <div>
                         <Typography variant='h4' m={5} gutterBottom>
