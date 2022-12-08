@@ -53,6 +53,7 @@ export default function CourseDetail() {
     const [questions, setQuestions] = useState(null);
     const [answers, setAnswers] = useState(null);
     const [enrolledCourseList, setEnrolledCourseList] = useState([])
+    const [errors,setErrors] = useState({});
     if (localStorage.getItem('courseHubtoken') == null) {
         navigate("/signin")
     }
@@ -216,16 +217,50 @@ export default function CourseDetail() {
     //     first && navigate(`/course/${courseList.id}/content`, {state: {id: 1, content: courseList.contents}});
     // }
 
+    function isValidHttpUrl(string) {
+        let url;
+        try {
+            url = new URL(string);
+        } catch (_) {
+            return false;
+        }
+        return url.protocol === "http:" || url.protocol === "https:";
+    }
     const addContent = (event: React.FormEvent<HTMLFormElement>) => {
         const currentCourse = courseList[0];
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const newContent = {
-            name:data.get('name'),
-            type:data.get('type'),
-            description : data.get('description'),
-            url:data.get('url')
+            name:data.get('name') as string,
+            type:data.get('type') as string,
+            description : data.get('description') as string,
+            url:data.get('url') as string
         };
+        const error = {};
+        let isError = false;
+        if(!isValidHttpUrl(data.get('url'))){
+            // @ts-ignore
+            error['url'] = "URL not valid";
+            isError = true;
+        }
+        if(newContent.name == null || newContent.name.length == 0){
+            error['name'] = "Required";
+            isError = true;
+        }
+        if(data.get('type') == null|| newContent.type.length == 0){
+            error['type'] = "Required";
+            isError = true;
+        }
+        if(data.get('description') == null|| newContent.description.length == 0){
+            error['description'] = "Required";
+            isError = true;
+        }
+        if(isError){
+            setErrors(error);
+            console.log(error);
+            return;
+        }
+
         if (currentCourse.contents === null) {
             currentCourse.contents = newContent;
         } else {
@@ -271,6 +306,14 @@ export default function CourseDetail() {
             questions:questions,
             answers:answers
         };
+        const error = {}
+        if(data.get('exam_duration')<=0){
+            // @ts-ignore
+
+            error['exam_duration'] = "Duration should be a positive integer.";
+            setErrors(error);
+            return
+        }
         console.log(newContent);
         if (currentCourse.exams === null) {
             currentCourse.exams = newContent;
@@ -321,6 +364,8 @@ export default function CourseDetail() {
         setIsContentAdding(false);
         setIsExamAdding(value);
     }
+
+
     // const currentHeight = window.innerHeight
 
     // @ts-ignore
@@ -350,7 +395,7 @@ export default function CourseDetail() {
             <ThemeProvider theme={theme}>
                 {loader && <Loader></Loader>}
                 <Container component="main">
-                    <CssBaseline/>             
+                    <CssBaseline/>
                     <Typography variant='h3' m={5} gutterBottom>
                         {/* {myString} */}
                         {code} - {name}
@@ -442,6 +487,8 @@ export default function CourseDetail() {
                                     id="name"
                                     label="Name"
                                     autoFocus
+                                    error={errors['name']!=null}
+                                    helperText={errors['name']!=null?"Required":""}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -453,6 +500,8 @@ export default function CourseDetail() {
                                     name="type"
                                     autoComplete="family-name"
                                     select
+                                    error={errors['type']!=null}
+                                    helperText={errors['type']!=null?"Required":""}
                                 >
                                     <MenuItem value="Video">Video</MenuItem>
                                     <MenuItem value="Pdf">PDF</MenuItem>
@@ -466,6 +515,8 @@ export default function CourseDetail() {
                                     label="Description"
                                     name="description"
                                     autoComplete="family-name"
+                                    error={errors['description']!=null}
+                                    helperText={errors['description']!=null?"Required":""}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -476,6 +527,8 @@ export default function CourseDetail() {
                                     label="URL"
                                     name="url"
                                     autoComplete="url"
+                                    error={errors['url']!=null}
+                                    helperText={errors['url']!=null?"Please enter a valid URL":""}
                                 />
                             </Grid>
                         </Grid>
@@ -523,6 +576,9 @@ export default function CourseDetail() {
                                     label="Duration"
                                     name="exam_duration"
                                     autoComplete="duration"
+                                    type="number"
+                                    error={errors['exam_duration']!=null}
+                                    helperText={errors['exam_duration']!=null?"Duration should be greater than zero":""}
                                 />
                             </Grid>
                             <Grid item xs={12}>

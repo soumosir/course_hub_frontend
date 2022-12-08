@@ -55,6 +55,7 @@ export default function AddCourse() {
     const [endDate, setEndDate] = useState(new Date());
     const [content, setContent] = useState(null);
     const [errorMessage,setErrorMessage]  = useState("");
+    const [err,setErr] = useState({});
     const [exam, setExam] = useState(null);
     const navigate = useNavigate();
     if(localStorage.getItem('courseHubtoken') == null){
@@ -80,29 +81,38 @@ export default function AddCourse() {
 
     const validate = (data :any) => {
 
-        let err = "";
-        if(data.get('name')==undefined || data.get('name').length<8 || data.get('name').length>20){
-            err += " Course name should be more than 8 and less than 20. "
+        const err = {};
+        let isErrorPresent= false;
+        if(data.get('name')==null || data.get('name').length<8 || data.get('name').length>20){
+            err['name'] = "Course name should be more than 8 and less than 20."
+            isErrorPresent = true;
         }
-        if(data.get('code')==undefined || data.get('code').length<3 || data.get('code').lecture>20){
-            err += " Course Code  should be more than 3 and less than 20."
+        if(data.get('code')==null || data.get('code').length<3 || data.get('code').lecture>20){
+            err['code'] = "Course Code should be more than 3 and less than 20."
+            isErrorPresent = true;
+
         }
-        if(data.get('description')==undefined || data.get('description').length<8 || data.get('description').length>50){
-            err += " Course description should be more than 8 and less than 50. "
+        if(data.get('description')==null || data.get('description').length<8 || data.get('description').length>50){
+            err['description'] = "Course description should be more than 8 and less than 50."
+            isErrorPresent = true;
+
         }
-        if(data.get('totalSeats')<=0 ){
-            err += " TotalSeats should be positive integer. "
+        if(data.get('description')==null || data.get('totalSeats')<=0 ){
+            err['totalSeats']= "TotalSeats should be positive integer."
+            isErrorPresent = true;
+
         }
-        if(data.get('name')==undefined || data.get('name')<8 || data.get('name')>20){
-            err += " Course name should be more than 8 and less than 20. "
+        if(data.get('name')==null || data.get('name')<8 || data.get('name')>20){
+            err['name'] = "Course name should be more than 8 and less than 20."
+            isErrorPresent = true;
         }
-       
-        if(err!=""){
-            setErrorMessage(err);
+
+        if(isErrorPresent){
+            setErr(err);
             return false;
         }
         return true;
-        
+
     }
 
     const [loader, setLoader] = React.useState(false);
@@ -131,7 +141,7 @@ export default function AddCourse() {
         }).catch((err) => {
             console.log(err.response.data['error_message']);
             if(err.response.data['error_message']==null){
-                setErrorMessage("Error parsing data! Please enter with a different unique course code!") 
+                setErrorMessage("Error parsing data! Please enter with a different unique course code!")
             }
             else{
             setErrorMessage(err.response.data['error_message'])
@@ -162,11 +172,11 @@ export default function AddCourse() {
                     <Typography component="h1" variant="h5">
                         Add Course
                     </Typography>
-                    
+
                     <Typography sx={{ fontSize: 18 }} color="red">
                     {errorMessage}
                     </Typography>
-                    
+
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={12}>
@@ -178,6 +188,8 @@ export default function AddCourse() {
                                     id="name"
                                     label="Course Name"
                                     autoFocus
+                                    error={err['name']!=null}
+                                    helperText={err['name']!=null?err['name']:""}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={12}>
@@ -188,6 +200,8 @@ export default function AddCourse() {
                                     label="Course Code"
                                     name="code"
                                     autoComplete="family-name"
+                                    error={err['code']!=null}
+                                    helperText={err['code']!=null?err['code']:""}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={12}>
@@ -198,6 +212,8 @@ export default function AddCourse() {
                                     label="Description"
                                     name="description"
                                     autoComplete="description"
+                                    error={err['description']!=null}
+                                    helperText={err['description']!=null?err['description']:""}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={12}>
@@ -209,6 +225,8 @@ export default function AddCourse() {
                                     label="Total Seats"
                                     name="totalSeats"
                                     autoComplete="totalSeats"
+                                    error={err['totalSeats']!=null}
+                                    helperText={err['totalSeats']!=null?err['totalSeats']:""}
                                 />
                             </Grid>
                             {/* <Grid item xs={12}>
