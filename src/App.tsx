@@ -18,7 +18,7 @@ import AddCourse from "./components/courses/addcourse";
 import HomePage from './components/home/homepage'
 import NotFoundPage from './components/notFoundPage/notFoundPage'
 
-export const hostUrl = "https://localhost:8443"
+export const hostUrl = "https://coursehubbackend.herokuapp.com"
 
 function App() {
   // const [count, setCount] = useState(0)
