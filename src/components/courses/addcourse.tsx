@@ -20,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {Input} from "@mui/material";
 import {delay} from "@reduxjs/toolkit/dist/utils";
 import { hostUrl } from '../../App';
+import Loader from '../loader/loader';
 
 function Copyright(props: any) {
     return (
@@ -202,7 +203,7 @@ export default function AddCourse() {
 
                     </Box>
                 </Box>
-                <Copyright sx={{mt: 5}}/>
+                {/* <Copyright sx={{mt: 5}}/> */}
             </Container>
         </ThemeProvider>
     );

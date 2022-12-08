@@ -311,6 +311,7 @@ export default function CourseDetail() {
     // @ts-ignore
 
     const [loader, setLoader] = React.useState(false);
+    // let myString = "ABC {\'\n\'} ABC"
     
     return (
         
@@ -333,8 +334,9 @@ export default function CourseDetail() {
             <ThemeProvider theme={theme}>
                 {loader && <Loader></Loader>}
                 <Container component="main">
-                    <CssBaseline/>
+                    <CssBaseline/>             
                     <Typography variant='h3' m={5} gutterBottom>
+                        {/* {myString} */}
                         {code} - {name}
                     </Typography>
                     <Card sx={{minWidth: 275, m: 5}}>

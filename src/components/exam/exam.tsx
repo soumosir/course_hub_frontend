@@ -204,12 +204,16 @@ export default function Exam(props: any) {
 
 
 
-        :loading}
+        : 
+        <Typography m={5} sx={{ fontSize: 18 }} color={loading.length <= 10 ? "text.secondary":"red"}>
+          {loading}
+        </Typography>
+        }
         {score=="-1"?  ""
          :
          score
         }
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
     </ThemeProvider>
   );
