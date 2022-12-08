@@ -141,13 +141,16 @@ export default function Exam(props: any) {
             }
         }).catch((err) => {
           setLoader(false)
-          alert(`Exam doesnot exist`);
+          // alert(`Exam doesnot exist`);
           setLoading("Exam doesnot exist");
+          if (err.response.status == 403) {
+            localStorage.clear()
+            navigate("/signin")
+          }
           console.log(err);
         })
 
     }, []);
-
 
     return (
     <ThemeProvider theme={theme}>

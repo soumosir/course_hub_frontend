@@ -99,12 +99,24 @@ export default function CourseDetail() {
             setFirst(true);
             setLoader(false)
             // console.log(courseList)
+        }).catch((err) => {
+            setLoader(false)
+            console.log(err.response.status);
+            if (err.response.status == 403) {
+              navigate("/signin")
+            }
         })
 
         setLoader(true)
         getEnrolledCourses().then(r => {
             setEnrolledCourseList(r.data)
             setLoader(false)
+        }).catch((err) => {
+            setLoader(false)
+            console.log(err.response.status);
+            if (err.response.status == 403) {
+              navigate("/signin")
+            }
         })
     }, []);
 
@@ -134,11 +146,13 @@ export default function CourseDetail() {
                 window.location.reload();
             })
 
-        }).catch(error => {
-            console.log("Error Unerolling User", error)
+        }).catch((err) => {
             setLoader(false)
-            // setUnsuccessfulWishlistDeletion(true)
-        });
+            console.log(err.response.status);
+            if (err.response.status == 403) {
+              navigate("/signin")
+            }
+        })
     }
 
     function enrollInCourse(id: any) {
@@ -164,8 +178,11 @@ export default function CourseDetail() {
             })
         }).catch((err) => {
             setLoader(false)
-            console.log(err);
-        });
+            console.log(err.response.status);
+            if (err.response.status == 403) {
+              navigate("/signin")
+            }
+          })
     }
 
     const handleQuestionChange = (e: { target: { files: Blob[]; }; }) => {

@@ -45,7 +45,14 @@ export default function Content() {
           console.log("Content Details")
           console.log(r.data)
           }
-        })
+        }).catch((err) => {
+            setLoader(false)
+            console.log(err.response.status);
+            if (err.response.status == 403) {
+                localStorage.clear()
+              navigate("/signin")
+            }
+          })
       }, []);
     // const [courseList, setCourseList] = useState([])
     // const arr = ['https://www.youtube.com/watch?v=BQwj6A99oVc','https://www.youtube.com/watch?v=O753uuutqH8&t=10s&ab_channel=CrashCourse','https://www.youtube.com/watch?v=M_GVUj86VaY&list=RDLVO753uuutqH8&index=2&ab_channel=KeepOnCoding']

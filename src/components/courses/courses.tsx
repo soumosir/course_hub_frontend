@@ -53,6 +53,12 @@ export default function Courses() {
         appService.getCourses().then(r => {
           setLoader(false)  
           setCourseList(r.data)
+        }).catch((err) => {
+          setLoader(false)
+          console.log(err.response.status);
+          if (err.response.status == 403) {
+            navigate("/signin")
+          }
         })
       }, []);
 

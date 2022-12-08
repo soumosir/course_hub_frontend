@@ -51,6 +51,13 @@ export default function Wishlist() {
           console.log(r.data)
           setLoader(false)
           setWishlistCourseList(r.data)
+      }).catch((err) => {
+        setLoader(false)
+        console.log(err.response.status);
+        if (err.response.status == 403) {
+          localStorage.clear()
+          navigate("/signin")
+        }
       })
     }, []);
 

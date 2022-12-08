@@ -78,7 +78,14 @@ export default function Home(props: any) {
           setEnrolledCourseList(r.data)
           console.log("Enrolled Courses", r.data)
           localStorage.setItem('enrolledCourses',JSON.stringify(r.data));
-      })
+        }).catch((err) => {
+          setLoader(false)
+          console.log(err.response.status);
+          if (err.response.status == 403) {
+            localStorage.clear()
+            navigate("/signin")
+          }
+        })
       }
     }, []);
     

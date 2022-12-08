@@ -82,8 +82,12 @@ export default function Grades(): JSX.Element {
             setLoading("Loaded");
         }).catch((err) => {
             setLoader(false)
+            if (err.response.status == 403) {
+                localStorage.clear()
+                navigate("/signin")
+            }
             if(localStorage.getItem('courseHubtoken') != null) {
-                alert(`Result not found`);
+                // alert(`Result not found`);
             }
           setLoading("Error occured. Please try again");
           console.log(err);
