@@ -146,7 +146,7 @@ export default function AddCourse() {
     return (
         <ThemeProvider theme={theme}>
              {loader && <Loader></Loader>}
-            <Container component="main" maxWidth="xs">
+            <Container component="main" >
                 <CssBaseline/>
                 <Box
                     sx={{
@@ -169,7 +169,7 @@ export default function AddCourse() {
                     
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{mt: 3}}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
                                     autoComplete="given-name"
                                     name="name"
@@ -180,7 +180,7 @@ export default function AddCourse() {
                                     autoFocus
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
                                     required
                                     fullWidth
@@ -190,7 +190,7 @@ export default function AddCourse() {
                                     autoComplete="family-name"
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
                                     required
                                     fullWidth
@@ -200,7 +200,7 @@ export default function AddCourse() {
                                     autoComplete="description"
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={12}>
                                 <TextField
                                     required
                                     fullWidth
@@ -217,12 +217,12 @@ export default function AddCourse() {
                             <Grid item xs={12}>
                                 End Date - <DatePicker selected={endDate} onChange={setEndDate}/>
                             </Grid> */}
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 Content - <Input aria-label="Content" key="content" type = "file" accept=".json" onChange={handleContentChange}/>
                             </Grid>
                             <Grid item xs={12}>
                                 Exam -<Input aria-label="Exams" key="exam" type = "file" accept=".json" onChange={handleExamChange}/>
-                            </Grid>
+                            </Grid> */}
 
                         </Grid>
                         <Button
@@ -233,7 +233,7 @@ export default function AddCourse() {
                         >
                             Add Course
                         </Button>
-                        Content Format
+                        {/* Content Format
                         <div>{JSON.stringify([
                             {"name":"lecture 1","type":"video","url":"google.com","description":"i am description"},
                             {"name":"lecture pdf","type":"image","url":"google.com","description":"i am description"}
@@ -244,7 +244,10 @@ export default function AddCourse() {
                             {"name":"Quiz name 1","type":"QUIZ","duration":120,
                                 "questions":"{how many bytes is  char?=[3, 2, 1, 0], what is array?=[DS, wall, io, boolean], what is 1+9?=[3, 2, 1, 10], what is 1+1?=[3, 2, 1, 0]}",
                                 "answers":"{how many bytes is  char?=1, what is array?=DS, what is 1+9?=10, what is 1+1?=2}"}
-                        ], null, 2) }</div>
+                        ], null, 2) }</div> */}
+                        <Typography sx={{ fontSize: 18 , color: 'text.secondary'}}>
+                        Please note, after the creation of the course, you can add the contents and exams in home -> course page!
+                    </Typography>
 
                     </Box>
                 </Box>
